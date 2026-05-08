@@ -32,10 +32,12 @@
                     <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
                     <span class="nav-label">Start</span>
                 </a>
-                <a href="users.php" class="nav-item {{ activePage == 'users' ? 'active' : '' }}">
-                    <span class="nav-icon"><i class="fa-solid fa-users"></i></span>
-                    <span class="nav-label">Benutzer</span>
-                </a>
+                {% if currentUser.is_admin %}
+                    <a href="users.php" class="nav-item {{ activePage == 'users' ? 'active' : '' }}">
+                        <span class="nav-icon"><i class="fa-solid fa-users"></i></span>
+                        <span class="nav-label">Benutzer</span>
+                    </a>
+                {% endif %}
                 <a href="profil.php" class="nav-item {{ activePage == 'profil' ? 'active' : '' }}">
                     <span class="nav-icon"><i class="fa-solid fa-user"></i></span>
                     <span class="nav-label">Profil</span>

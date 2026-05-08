@@ -27,7 +27,7 @@
                             style="cursor: pointer"
                             onclick="openEditDialog({{ user|json_encode|e('html_attr') }})"
                          {% else %}
-                            onclick="window.location.href='profil.php?id={{ user.id }}'"
+                            onclick="window.location.href='profil.php'"
                          {% endif %}
                     >
                         <div class="card-main">

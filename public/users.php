@@ -15,6 +15,11 @@ require_once __DIR__ . '/includes/hash.php';
 requireLogin();
 $currentUser = getCurrentUser();
 
+if (empty($currentUser['is_admin'])) {
+    header('Location: start.php');
+    exit;
+}
+
 // Benutzer bearbeiten (nur Admins)
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($currentUser['is_admin'])) {

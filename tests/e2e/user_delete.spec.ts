@@ -7,13 +7,24 @@ test.describe('Benutzer löschen', () => {
   test('Admin sollte einen anderen Benutzer löschen können', async ({ page }) => {
     // Login als Admin
     await page.goto(`/login.php?hash=${adminUserHash}`);
+    await expect(page).toHaveURL(/start.php/);
+    
+    await page.goto('/users.php');
     await expect(page).toHaveURL(/users.php/);
 
-    // Sicherstellen, dass der Test-Benutzer da ist
-    await expect(page.locator('.card-title', { hasText: 'Test User' })).toBeVisible();
+    const deleteUserName = 'Test User for delete';
 
-    // Dialog für Test User öffnen
-    await page.click('.card:has-text("Test User")');
+    // Neuen Benutzer erstellen
+    await page.click('button:has-text("Benutzer hinzufügen")');
+    await page.fill('#user-name', deleteUserName);
+    await page.click('button:has-text("Speichern")');
+
+    // Sicherstellen, dass der neue Benutzer in der Liste ist
+    const userCard = page.locator('.card', { hasText: deleteUserName });
+    await expect(userCard).toBeVisible();
+
+    // Dialog für den neuen Benutzer öffnen
+    await userCard.click();
     
     const dialog = page.locator('#userModal');
     await expect(dialog).toBeVisible();
@@ -29,14 +40,16 @@ test.describe('Benutzer löschen', () => {
     // Nach dem Löschen sollten wir wieder auf users.php sein
     await expect(page).toHaveURL(/users.php/);
 
-    // Test User sollte weg sein
-    await expect(page.locator('.card-title', { hasText: 'Test User' })).not.toBeVisible();
+    // Der Benutzer sollte weg sein
+    await expect(page.locator('.card-title', { hasText: deleteUserName })).not.toBeVisible();
   });
 
   test('Admin sollte sich nicht selbst löschen können', async ({ page }) => {
     // Login als Admin
     await page.goto(`/login.php?hash=${adminUserHash}`);
-    await expect(page).toHaveURL(/users.php/);
+    await expect(page).toHaveURL(/start.php/);
+
+    await page.goto('/users.php');
 
     // Dialog für Admin User öffnen (sich selbst)
     await page.click('.card:has-text("Admin User")');

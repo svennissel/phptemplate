@@ -9,24 +9,35 @@ test.describe('Benutzerseiten', () => {
     await page.goto(`/login.php?hash=${testUserHash}`);
     
     // Wir sollten zur Übersichtsseite weitergeleitet werden
-    await expect(page).toHaveURL(/users.php/);
+    await expect(page).toHaveURL(/start.php/);
     
     // In base.html.twig steht der Seitentitel in .topbar-title
-    await expect(page.locator('.topbar-title')).toContainText('Benutzer');
+    // Wir prüfen hier auf start.php, ob die Navigation da ist oder ein Element von start.php
+    await expect(page.locator('.nav-item.active')).toContainText('Start');
     
     // Der Test-Benutzer sollte in der Liste sein
+    // Wir navigieren zu users.php als Admin, um die Liste zu sehen, oder wir prüfen was anderes auf start.php
+    await page.goto('/users.php');
+    await expect(page).toHaveURL(/start.php/); // Sollte redirecten, da testUser kein Admin ist
+    
+    // Admin Login um User Liste zu prüfen
+    await page.goto(`/login.php?hash=${adminUserHash}`);
+    await page.goto('/users.php');
     await expect(page.locator('.card-title', { hasText: 'Test User' })).toBeVisible();
   });
 
   test('sollte das Benutzerprofil anzeigen', async ({ page }) => {
     // Login
     await page.goto(`/login.php?hash=${testUserHash}`);
+    await expect(page).toHaveURL(/start.php/);
+
+    // Da wir nicht mehr auf users.php landen, müssen wir profil.php direkt aufrufen oder einen anderen Weg finden.
+    // Aber der Test wollte wohl den Klick in der Liste prüfen.
+    // Da normale User die Liste nicht mehr sehen, passen wir den Test an:
+    await page.goto('/profil.php'); 
     
-    // Klick auf den Benutzer in der Liste
-    await page.click('text=Test User');
-    
-    // URL sollte profil.php mit ID enthalten
-    await expect(page).toHaveURL(/profil.php\?id=\d+/);
+    // URL sollte profil.php sein
+    await expect(page).toHaveURL(/profil.php/);
     
     // Details prüfen
     await expect(page.locator('.profile-name')).toContainText('Test User');
@@ -35,6 +46,9 @@ test.describe('Benutzerseiten', () => {
   test('sollte Admin-Badge anzeigen', async ({ page }) => {
     // Login als Admin
     await page.goto(`/login.php?hash=${adminUserHash}`);
+    await expect(page).toHaveURL(/start.php/);
+
+    await page.goto('/users.php');
     await expect(page).toHaveURL(/users.php/);
 
     // Klick auf den Admin-User in der Liste
@@ -48,7 +62,9 @@ test.describe('Benutzerseiten', () => {
   test('Browser zurück Button sollte den Bearbeiten Dialog schließen', async ({ page }) => {
     // Login als Admin
     await page.goto(`/login.php?hash=${adminUserHash}`);
-    await expect(page).toHaveURL(/users.php/);
+    await expect(page).toHaveURL(/start.php/);
+
+    await page.goto('/users.php');
 
     // Dialog öffnen
     await page.click('text=Admin User');
@@ -70,7 +86,9 @@ test.describe('Benutzerseiten', () => {
   test('sollte die komplette Login URL im Bearbeiten-Dialog anzeigen', async ({ page }) => {
     // Login als Admin
     await page.goto(`/login.php?hash=${adminUserHash}`);
-    await expect(page).toHaveURL(/users.php/);
+    await expect(page).toHaveURL(/start.php/);
+
+    await page.goto('/users.php');
 
     // Dialog öffnen
     await page.click('text=Admin User');
