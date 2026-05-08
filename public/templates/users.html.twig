@@ -4,25 +4,92 @@
 {% block pageTitle %}Benutzer{% endblock %}
 
 {% block content %}
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
     {% if users is empty %}
         <p class="muted">Es sind noch keine Benutzer angelegt.</p>
     {% else %}
         <ul class="card-list">
             {% for user in users %}
                 <li class="card">
-                    <a class="card-link" href="profil.php?id={{ user.id }}">
+                    <div class="card-link" 
+                         {% if currentUser.is_admin %}
+                            style="cursor: pointer"
+                            onclick="openEditDialog({{ user|json_encode|e('html_attr') }})"
+                         {% else %}
+                            onclick="window.location.href='profil.php?id={{ user.id }}'"
+                         {% endif %}
+                    >
                         <div class="card-main">
                             <div class="card-title">{{ user.name }}</div>
-                            {% if user.email %}
-                                <div class="card-subtitle">{{ user.email }}</div>
-                            {% endif %}
                         </div>
                         {% if user.is_admin %}
                             <span class="badge">Admin</span>
                         {% endif %}
-                    </a>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
+    {% endif %}
+
+    {% if currentUser.is_admin %}
+        <div id="editDialog" class="modal">
+            <div class="modal-content">
+                <h2 class="page-title">Benutzer bearbeiten</h2>
+                <form method="post" class="form">
+                    <input type="hidden" name="csrf_token" value="{{ csrfToken }}">
+                    <input type="hidden" name="id" id="edit-id">
+                    
+                    <label for="edit-name">Name</label>
+                    <input type="text" name="name" id="edit-name" required>
+                    
+                    <label for="edit-hash">Login-Hash</label>
+                    <input type="text" id="edit-hash" readonly style="background: var(--overall-bg-color); cursor: not-allowed;">
+
+                    <label style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        <input type="checkbox" name="is_admin" id="edit-is_admin" style="width: auto;"> Admin-Rechte
+                    </label>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <button type="submit" class="btn-primary" style="flex: 1; margin-top: 0;">Speichern</button>
+                        <button type="button" class="btn-primary" style="flex: 1; margin-top: 0; background: var(--text-muted);" onclick="closeEditDialog()">Abbrechen</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function openEditDialog(user) {
+                document.getElementById('edit-id').value = user.id;
+                document.getElementById('edit-name').value = user.name;
+                document.getElementById('edit-hash').value = user.hash;
+                document.getElementById('edit-is_admin').checked = user.is_admin == 1;
+                document.getElementById('editDialog').style.display = 'flex';
+                
+                // Push state to history so back button can close the modal
+                history.pushState({modalOpen: true}, '');
+            }
+            function closeEditDialog(fromHistory = false) {
+                document.getElementById('editDialog').style.display = 'none';
+                if (!fromHistory && history.state && history.state.modalOpen) {
+                    history.back();
+                }
+            }
+            // Schließen bei Klick außerhalb
+            window.onclick = function(event) {
+                let modal = document.getElementById('editDialog');
+                if (event.target == modal) {
+                    closeEditDialog();
+                }
+            }
+            // Handle back button
+            window.onpopstate = function(event) {
+                if (document.getElementById('editDialog').style.display === 'flex') {
+                    closeEditDialog(true);
+                }
+            };
+        </script>
     {% endif %}
 {% endblock %}

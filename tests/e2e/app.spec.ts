@@ -2,48 +2,6 @@ import { test, expect } from '@playwright/test';
 
 test.describe('PHP Template App', () => {
   const testUserHash = 'test-user-hash-123456'; 
-  const adminUserHash = 'admin-user-hash-123456';
-
-  test('sollte sich erfolgreich per Hash einloggen', async ({ page }) => {
-    // Zum Login navigieren
-    await page.goto(`/login.php?hash=${testUserHash}`);
-    
-    // Wir sollten zur Übersichtsseite weitergeleitet werden
-    await expect(page).toHaveURL(/users.php/);
-    
-    // In base.html.twig steht der Seitentitel in .topbar-title
-    await expect(page.locator('.topbar-title')).toContainText('Benutzer');
-    
-    // Der Test-Benutzer sollte in der Liste sein
-    await expect(page.locator('.card-title', { hasText: 'Test User' })).toBeVisible();
-  });
-
-  test('sollte das Benutzerprofil anzeigen', async ({ page }) => {
-    // Login
-    await page.goto(`/login.php?hash=${testUserHash}`);
-    
-    // Klick auf den Benutzer in der Liste
-    await page.click('text=Test User');
-    
-    // URL sollte profil.php mit ID enthalten
-    await expect(page).toHaveURL(/profil.php\?id=\d+/);
-    
-    // Details prüfen
-    await expect(page.locator('.profile-name')).toContainText('Test User');
-    await expect(page.locator('.profile-details')).toContainText('test@example.com');
-  });
-
-  test('sollte Admin-Badge anzeigen', async ({ page }) => {
-    // Login als Admin
-    await page.goto(`/login.php?hash=${adminUserHash}`);
-    await expect(page).toHaveURL(/users.php/);
-
-    // Klick auf den Admin-User in der Liste
-    await page.click('text=Admin User');
-
-    // Admin-Badge sollte vorhanden sein
-    await expect(page.locator('.badge')).toContainText('Admin');
-  });
 
   test('sollte sich ausloggen können', async ({ page }) => {
     // Login

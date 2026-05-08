@@ -103,7 +103,7 @@ class AuthTest extends TestCase
         $stmtMock = $this->createMock(PDOStatement::class);
         $stmtMock->method('fetch')->willReturn(['id' => 1, 'name' => 'Test User', 'hash' => 'my_hash']);
         
-        $this->pdoMock->method('prepare')->with($this->stringContains('SELECT * FROM users WHERE hash = ?'))
+        $this->pdoMock->method('prepare')->with($this->stringContains('SELECT id, name, hash, is_admin, created_at FROM users WHERE hash = ?'))
                       ->willReturn($stmtMock);
         
         $user = getCurrentUser();

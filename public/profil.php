@@ -14,17 +14,14 @@ require_once __DIR__ . '/includes/twig.php';
 requireLogin();
 
 $current = getCurrentUser();
-$id      = isset($_GET['id']) ? (int)$_GET['id'] : (int)$current['id'];
+$id      = (int)$current['id'];
 
-// Nur Admins dürfen fremde Profile aufrufen
-if ($id !== (int)$current['id'] && empty($current['is_admin'])) {
-    $id = (int)$current['id'];
-}
-
-$stmt = $pdo->prepare('SELECT id, name, email, hash, is_admin, created_at FROM users WHERE id = ?');
+global $pdo;
+$stmt = $pdo->prepare('SELECT id, name, hash, is_admin, created_at FROM users WHERE id = ?');
 $stmt->execute([$id]);
 $user = $stmt->fetch();
 
+global $twig;
 if (!$user) {
     http_response_code(404);
     echo $twig->render('profil.html.twig', [

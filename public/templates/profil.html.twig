@@ -13,10 +13,6 @@
             {% if user.is_admin %}<span class="badge">Admin</span>{% endif %}
 
             <dl class="profile-details">
-                {% if user.email %}
-                    <dt>E-Mail</dt>
-                    <dd>{{ user.email }}</dd>
-                {% endif %}
                 <dt>Mitglied seit</dt>
                 <dd>{{ user.created_at }}</dd>
             </dl>
