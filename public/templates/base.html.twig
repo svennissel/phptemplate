@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#1976d2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>{% block title %}phptemplate{% endblock %}</title>
+    <link rel="stylesheet" href="css/fontawesome.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+    {% block header %}
+        {% if currentUser is defined and currentUser %}
+            <header class="topbar">
+                <div class="topbar-title">{% block pageTitle %}phptemplate{% endblock %}</div>
+            </header>
+        {% endif %}
+    {% endblock %}
+
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block nav %}
+        {% if currentUser is defined and currentUser %}
+            <nav class="bottom-nav" aria-label="Hauptnavigation">
+                <a href="start.php" class="nav-item {{ activePage == 'start' ? 'active' : '' }}">
+                    <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
+                    <span class="nav-label">Start</span>
+                </a>
+                <a href="overview.php" class="nav-item {{ activePage == 'overview' ? 'active' : '' }}">
+                    <span class="nav-icon"><i class="fa-solid fa-users"></i></span>
+                    <span class="nav-label">Benutzer</span>
+                </a>
+                <a href="user.php" class="nav-item {{ activePage == 'user' ? 'active' : '' }}">
+                    <span class="nav-icon"><i class="fa-solid fa-user"></i></span>
+                    <span class="nav-label">Profil</span>
+                </a>
+            </nav>
+        {% endif %}
+    {% endblock %}
+</div>
+</body>
+</html>

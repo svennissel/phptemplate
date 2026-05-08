@@ -1,0 +1,39 @@
+# configuration
+config.php
+
+#release
+teamcontrol_*.zip
+
+# Composer
+/vendor/
+composer.phar
+composer.lock
+
+# PHPUnit
+.phpunit.result.cache
+
+# Node.js
+node_modules/
+
+# Playwright
+test-results/
+playwright-report/
+
+# IDE
+.idea/
+qodana.yaml
+
+# User uploads
+public/uploads/
+
+# OS
+.DS_Store
+Thumbs.db
+
+#test copde
+info.php
+sync.sh
+/public/test.html
+
+# Test DB override
+.tc_database

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Benutzer{% endblock %}
+{% block pageTitle %}Benutzer{% endblock %}
+
+{% block content %}
+    {% if users is empty %}
+        <p class="muted">Es sind noch keine Benutzer angelegt.</p>
+    {% else %}
+        <ul class="card-list">
+            {% for user in users %}
+                <li class="card">
+                    <a class="card-link" href="user.php?id={{ user.id }}">
+                        <div class="card-main">
+                            <div class="card-title">{{ user.name }}</div>
+                            {% if user.email %}
+                                <div class="card-subtitle">{{ user.email }}</div>
+                            {% endif %}
+                        </div>
+                        {% if user.is_admin %}
+                            <span class="badge">Admin</span>
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

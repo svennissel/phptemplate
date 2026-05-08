@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+{% block pageTitle %}Profil{% endblock %}
+
+{% block content %}
+    {% if user is null %}
+        <p class="error">Benutzer nicht gefunden.</p>
+    {% else %}
+        <section class="profile">
+            <div class="avatar"><i class="fa-solid fa-user"></i></div>
+            <h1 class="profile-name">{{ user.name }}</h1>
+            {% if user.is_admin %}<span class="badge">Admin</span>{% endif %}
+
+            <dl class="profile-details">
+                {% if user.email %}
+                    <dt>E-Mail</dt>
+                    <dd>{{ user.email }}</dd>
+                {% endif %}
+                <dt>Mitglied seit</dt>
+                <dd>{{ user.created_at }}</dd>
+            </dl>
+
+            {% if loginUrl %}
+                <ul class="card-list">
+                    <li class="card">
+                        <div class="card-main">
+                            <div class="card-title">Persönlicher Login-Link</div>
+                            <p class="muted">Mit diesem Link kann sich der Benutzer einloggen. Der Hash wird anschließend für ein Jahr in einem Cookie gespeichert.</p>
+                            <input type="text" class="copy-input" readonly value="{{ loginUrl }}" onclick="this.select()">
+                        </div>
+                    </li>
+                </ul>
+            {% endif %}
+        </section>
+    {% endif %}
+{% endblock %}

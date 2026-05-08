@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Installation{% endblock %}
+
+{% block content %}
+<ul class="card-list">
+    <li class="card">
+        <div class="card-main">
+            <div class="card-title">Installation</div>
+            <p class="muted">Bitte geben Sie die Verbindungsdaten zur MySQL-Datenbank ein.</p>
+
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+
+            <form method="post" class="form">
+                <label for="database_host">Datenbank-Host</label>
+                <input id="database_host" name="database_host" type="text" value="{{ database_host }}" required>
+
+                <label for="database">Datenbank</label>
+                <input id="database" name="database" type="text" value="{{ database }}" required>
+
+                <label for="database_user">Datenbank-Benutzer</label>
+                <input id="database_user" name="database_user" type="text" value="{{ database_user }}" required>
+
+                <label for="database_password">Datenbank-Passwort</label>
+                <input id="database_password" name="database_password" type="password" value="{{ database_password }}">
+
+                <label for="admin_name">Admin-Name</label>
+                <input id="admin_name" name="admin_name" type="text" value="{{ admin_name }}" required>
+
+                <label for="twig_cache_dir">Twig-Cache-Verzeichnis (optional)</label>
+                <input id="twig_cache_dir" name="twig_cache_dir" type="text" value="{{ twig_cache_dir }}" placeholder="../var/cache/twig">
+                <p class="muted small">Lassen Sie dieses Feld leer, um den Cache zu deaktivieren.</p>
+
+                <button type="submit" class="btn-primary">Installieren</button>
+            </form>
+        </div>
+    </li>
+</ul>
+{% endblock %}
+
+{% block nav %}{% endblock %}

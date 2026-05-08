@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Anmelden{% endblock %}
+
+{% block content %}
+    <section class="centered-card">
+        <h1>Anmelden</h1>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% else %}
+            <p class="muted">Bitte verwenden Sie Ihren persönlichen Login-Link.</p>
+        {% endif %}
+    </section>
+{% endblock %}
+
+{% block nav %}{% endblock %}
