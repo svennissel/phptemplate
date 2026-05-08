@@ -21,5 +21,5 @@ if (!isLoggedIn()) {
     exit;
 }
 
-header('Location: overview.php');
+header('Location: users.php');
 exit;

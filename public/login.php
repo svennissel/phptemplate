@@ -17,7 +17,7 @@ $error = '';
 $hash = $_GET['hash'] ?? $_COOKIE['hash'] ?? $_SESSION['hash'] ?? '';
 if ($hash !== '') {
     if (loginByHash($hash)) {
-        header('Location: overview.php');
+        header('Location: users.php');
         exit;
     }
     $error = 'Ungültiger Login-Link.';

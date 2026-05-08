@@ -27,11 +27,11 @@ $user = $stmt->fetch();
 
 if (!$user) {
     http_response_code(404);
-    echo $twig->render('user.html.twig', [
+    echo $twig->render('profil.html.twig', [
         'currentUser' => $current,
         'user'        => null,
         'loginUrl'    => null,
-        'activePage'  => 'user',
+        'activePage'  => 'profil',
     ]);
     exit;
 }
@@ -41,9 +41,9 @@ $host     = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $basePath = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), '/');
 $loginUrl = $scheme . '://' . $host . $basePath . '/login.php?hash=' . urlencode($user['hash']);
 
-echo $twig->render('user.html.twig', [
+echo $twig->render('profil.html.twig', [
     'currentUser' => $current,
     'user'        => $user,
     'loginUrl'    => $loginUrl,
-    'activePage'  => 'user',
+    'activePage'  => 'profil',
 ]);

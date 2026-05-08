@@ -9,7 +9,7 @@ test.describe('PHP Template App', () => {
     await page.goto(`/login.php?hash=${testUserHash}`);
     
     // Wir sollten zur Übersichtsseite weitergeleitet werden
-    await expect(page).toHaveURL(/overview.php/);
+    await expect(page).toHaveURL(/users.php/);
     
     // In base.html.twig steht der Seitentitel in .topbar-title
     await expect(page.locator('.topbar-title')).toContainText('Benutzer');
@@ -25,8 +25,8 @@ test.describe('PHP Template App', () => {
     // Klick auf den Benutzer in der Liste
     await page.click('text=Test User');
     
-    // URL sollte user.php mit ID enthalten
-    await expect(page).toHaveURL(/user.php\?id=\d+/);
+    // URL sollte profil.php mit ID enthalten
+    await expect(page).toHaveURL(/profil.php\?id=\d+/);
     
     // Details prüfen
     await expect(page.locator('.profile-name')).toContainText('Test User');
@@ -36,7 +36,7 @@ test.describe('PHP Template App', () => {
   test('sollte Admin-Badge anzeigen', async ({ page }) => {
     // Login als Admin
     await page.goto(`/login.php?hash=${adminUserHash}`);
-    await expect(page).toHaveURL(/overview.php/);
+    await expect(page).toHaveURL(/users.php/);
 
     // Klick auf den Admin-User in der Liste
     await page.click('text=Admin User');
@@ -54,7 +54,7 @@ test.describe('PHP Template App', () => {
     await page.goto('/logout.php');
     
     // Sollte zum Login umgeleitet werden (oder zur Startseite, die zum Login umleitet)
-    await page.goto('/overview.php');
+    await page.goto('/users.php');
     await expect(page).toHaveURL(/login.php/);
   });
 
@@ -70,7 +70,7 @@ test.describe('PHP Template App', () => {
         await expect(page.locator('h1')).toContainText('Installation');
     } else {
         // Weitergeleitet zu index.php -> login.php
-        await expect(page).toHaveURL(/login.php|overview.php/);
+        await expect(page).toHaveURL(/login.php|users.php/);
     }
   });
 });

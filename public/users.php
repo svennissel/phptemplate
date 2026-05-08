@@ -15,8 +15,8 @@ requireLogin();
 $stmt = $pdo->query('SELECT id, name, email, hash, is_admin, created_at FROM users ORDER BY name');
 $users = $stmt->fetchAll();
 
-echo $twig->render('overview.html.twig', [
+echo $twig->render('users.html.twig', [
     'currentUser' => getCurrentUser(),
     'users'       => $users,
-    'activePage'  => 'overview',
+    'activePage'  => 'users',
 ]);
