@@ -10,6 +10,7 @@ if (!file_exists(__DIR__ . '/config.php')) {
 
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/twig.php';
+require_once __DIR__ . '/includes/url.php';
 
 requireLogin();
 
@@ -33,10 +34,7 @@ if (!$user) {
     exit;
 }
 
-$scheme   = isSecureServer() ? 'https' : 'http';
-$host     = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$basePath = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), '/');
-$loginUrl = $scheme . '://' . $host . $basePath . '/login.php?hash=' . urlencode($user['hash']);
+$loginUrl = getLoginUrl($user['hash'] ?? '');
 
 echo $twig->render('profil.html.twig', [
     'currentUser' => $current,

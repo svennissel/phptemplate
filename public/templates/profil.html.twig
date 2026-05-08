@@ -23,7 +23,11 @@
                         <div class="card-main">
                             <div class="card-title">Persönlicher Login-Link</div>
                             <p class="muted">Mit diesem Link kann sich der Benutzer einloggen. Der Hash wird anschließend für ein Jahr in einem Cookie gespeichert.</p>
-                            <input type="text" class="copy-input" readonly value="{{ loginUrl }}" onclick="this.select()">
+
+                            {% include 'form/copy_input.html.twig' with {
+                                value: loginUrl,
+                                inputId: 'profile-login-url'
+                            }%}
                         </div>
                     </li>
                 </ul>

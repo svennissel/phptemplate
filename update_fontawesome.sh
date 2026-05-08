@@ -33,7 +33,7 @@ curl -fsSL "$BASE_URL/webfonts/fa-solid-900.woff2" -o "$TMP_DIR/fa-solid-900.wof
 curl -fsSL "$BASE_URL/webfonts/fa-regular-400.woff2" -o "$TMP_DIR/fa-regular-400.woff2"
 
 # Statische Codepoints passend zu public/css/fontawesome.css
-UNICODES="U+f007,U+f0c0,U+f015"
+UNICODES="U+f007,U+f0c0,U+f015,U+f0c5,U+f00c"
 
 echo "Erzeuge minimierte WOFF2-Dateien ..."
 pyftsubset "$TMP_DIR/fa-solid-900.woff2" \

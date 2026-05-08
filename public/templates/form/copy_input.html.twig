@@ -1,0 +1,7 @@
+<div class="copy-input-container">
+    <input type="text" id="{{ inputId }}" readonly value="{{ value }}" style="background: var(--overall-bg-color); cursor: pointer;" onclick="copyToClipboard('{{ inputId }}', 'copy-icon-btn')">
+    <span class="copy-icon" onclick="copyToClipboard('{{ inputId }}', 'copy-icon-btn')" id="copy-icon-btn">
+        <i class="fa-solid fa-copy"></i>
+        <i class="fa-solid fa-check"></i>
+    </span>
+</div>

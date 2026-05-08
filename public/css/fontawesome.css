@@ -43,3 +43,5 @@
 .fa-users:before { content: "\f0c0"; }
 .fa-user:before { content: "\f007"; }
 .fa-house:before { content: "\f015"; }
+.fa-copy:before { content: "\f0c5"; }
+.fa-check:before { content: "\f00c"; }

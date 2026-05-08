@@ -9,6 +9,7 @@ if (!file_exists(__DIR__ . '/config.php')) {
 
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/twig.php';
+require_once __DIR__ . '/includes/url.php';
 
 requireLogin();
 $currentUser = getCurrentUser();
@@ -43,10 +44,13 @@ global $pdo, $twig;
 $stmt = $pdo->query('SELECT id, name, hash, is_admin, created_at FROM users ORDER BY name');
 $users = $stmt->fetchAll();
 
+$loginBaseUrl = getLoginUrl();
+
 echo $twig->render('users.html.twig', [
     'currentUser' => $currentUser,
     'users'       => $users,
     'activePage'  => 'users',
     'csrfToken'   => generateCsrfToken(),
     'error'       => $error,
+    'loginBaseUrl' => $loginBaseUrl,
 ]);

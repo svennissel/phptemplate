@@ -65,4 +65,26 @@ test.describe('Benutzerseiten', () => {
     // URL sollte immer noch users.php sein (keine tatsächliche Navigation weg von der Seite)
     await expect(page).toHaveURL(/users.php/);
   });
+
+  test('sollte die komplette Login URL im Bearbeiten-Dialog anzeigen', async ({ page }) => {
+    // Login als Admin
+    await page.goto(`/login.php?hash=${adminUserHash}`);
+    await expect(page).toHaveURL(/users.php/);
+
+    // Dialog öffnen
+    await page.click('text=Admin User');
+    
+    // Dialog sollte sichtbar sein
+    const dialog = page.locator('#editDialog');
+    await expect(dialog).toBeVisible();
+
+    // Login URL Feld prüfen
+    const loginUrlInput = page.locator('#edit-login-url');
+    await expect(loginUrlInput).toBeVisible();
+    
+    const urlValue = await loginUrlInput.inputValue();
+    
+    // Die URL sollte das Schema, den Host und den Hash enthalten
+    expect(urlValue).toMatch(/^http:\/\/.*\/login\.php\?hash=admin-user-hash-123456$/);
+  });
 });
