@@ -41,7 +41,8 @@ test.describe('Benutzerseiten', () => {
     await page.click('text=Admin User');
 
     // Admin-Badge sollte vorhanden sein
-    await expect(page.locator('.badge')).toContainText('Admin');
+    const adminCard = page.locator('.card', { hasText: 'Admin User' });
+    await expect(adminCard.locator('.badge')).toContainText('Admin');
   });
 
   test('Browser zurück Button sollte den Bearbeiten Dialog schließen', async ({ page }) => {
@@ -53,7 +54,7 @@ test.describe('Benutzerseiten', () => {
     await page.click('text=Admin User');
     
     // Dialog sollte sichtbar sein
-    const dialog = page.locator('#editDialog');
+    const dialog = page.locator('#userModal');
     await expect(dialog).toBeVisible();
 
     // Browser zurück Button betätigen
@@ -75,11 +76,11 @@ test.describe('Benutzerseiten', () => {
     await page.click('text=Admin User');
     
     // Dialog sollte sichtbar sein
-    const dialog = page.locator('#editDialog');
+    const dialog = page.locator('#userModal');
     await expect(dialog).toBeVisible();
 
     // Login URL Feld prüfen
-    const loginUrlInput = page.locator('#edit-login-url');
+    const loginUrlInput = page.locator('#user-login-url');
     await expect(loginUrlInput).toBeVisible();
     
     const urlValue = await loginUrlInput.inputValue();

@@ -14,6 +14,8 @@
     --font-color-on-primary: #fff;
     --error-bg: #ffe6e6;
     --error-text: #b00020;
+    --danger-button: var(--error-text);
+    --danger-button-text: #fff;
     --border-color: #eee;
     --shadow-light: rgba(0, 0, 0, 0.06);
 }
@@ -177,18 +179,30 @@ input[type="text"], input[type="password"], input[type="email"] {
 }
 input:focus { outline: 2px solid var(--primary-color); border-color: transparent; }
 
-.btn-primary {
+.btn {
     margin-top: 1rem;
-    background: var(--primary-color);
-    color: var(--font-color-on-primary);
     border: 0;
     padding: 0.85rem 1rem;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: var(--font-color-on-primary);
 }
 .btn-primary:active { background: var(--primary-active); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-danger {
+    background: var(--danger-button);
+    color: var(--danger-button-text);
+}
+.btn-danger:active { opacity: 0.8; }
 
 /* Copy URL Field */
 .copy-input-container {

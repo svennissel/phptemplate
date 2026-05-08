@@ -8,6 +8,14 @@
         <p class="error">{{ error }}</p>
     {% endif %}
 
+    {% if currentUser.is_admin %}
+        <div style="margin-bottom: 1.5rem; display: flex; justify-content: flex-end;">
+            <button class="btn btn-primary" style="margin-top: 0; width: auto; padding-left: 1.5rem; padding-right: 1.5rem;" onclick="openAddUserDialog()">
+                <i class="fas fa-plus" style="margin-right: 0.5rem;"></i> Benutzer hinzufügen
+            </button>
+        </div>
+    {% endif %}
+
     {% if users is empty %}
         <p class="muted">Es sind noch keine Benutzer angelegt.</p>
     {% else %}

@@ -1,66 +1,97 @@
 {% if currentUser.is_admin %}
-    <div id="editDialog" class="modal">
+    <div id="userModal" class="modal">
         <div class="modal-content">
-            <h2 class="page-title">Benutzer bearbeiten</h2>
+            <h2 class="page-title" id="modal-title">Benutzer bearbeiten</h2>
             <form method="post" class="form">
                 <input type="hidden" name="csrf_token" value="{{ csrfToken }}">
-                <input type="hidden" name="id" id="edit-id">
+                <input type="hidden" name="id" id="user-id">
                 
-                <label for="edit-name">Name</label>
-                <input type="text" name="name" id="edit-name" required>
+                <label for="user-name">Name</label>
+                <input type="text" name="name" id="user-name" required>
                 
-                <label for="edit-login-url">Login-Link</label>
-                {% include 'form/copy_input.html.twig' with {
-                    value: loginUrl,
-                    inputId: 'edit-login-url'
-                }%}
+                <div id="login-url-container">
+                    <label for="user-login-url">Login-Link</label>
+                    {% include 'form/copy_input.html.twig' with {
+                        value: loginUrl,
+                        inputId: 'user-login-url'
+                    }%}
+                </div>
 
                 <label style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
-                    <input type="checkbox" name="is_admin" id="edit-is_admin" style="width: auto;"> Admin-Rechte
+                    <input type="checkbox" name="is_admin" id="user-is_admin" style="width: auto;"> Admin-Rechte
                 </label>
 
+                <div id="delete-container" style="margin-top: 1rem; display: none;">
+                    <button type="submit" name="action" value="delete" class="btn btn-danger" style="width: 100%; margin-top: 0;" onclick="return confirm('Benutzer wirklich löschen?')">Benutzer löschen</button>
+                </div>
+
                 <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                    <button type="submit" class="btn-primary" style="flex: 1; margin-top: 0;">Speichern</button>
-                    <button type="button" class="btn-primary" style="flex: 1; margin-top: 0; background: var(--text-muted);" onclick="closeEditDialog()">Abbrechen</button>
+                    <button type="submit" name="action" value="save" class="btn btn-primary" style="flex: 1; margin-top: 0;">Speichern</button>
+                    <button type="button" class="btn btn-primary" style="flex: 1; margin-top: 0; background: var(--text-muted);" onclick="closeUserModal()">Abbrechen</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
+        function openAddUserDialog() {
+            document.getElementById('modal-title').innerText = 'Benutzer hinzufügen';
+            document.getElementById('user-id').value = '';
+            document.getElementById('user-name').value = '';
+            document.getElementById('user-is_admin').checked = false;
+            document.getElementById('login-url-container').style.display = 'none';
+            document.getElementById('delete-container').style.display = 'none';
+
+            openModal();
+        }
+
         function openEditDialog(user) {
-            document.getElementById('edit-id').value = user.id;
-            document.getElementById('edit-name').value = user.name;
-            document.getElementById('edit-login-url').value = '{{ loginBaseUrl }}' + encodeURIComponent(user.hash);
-            document.getElementById('edit-is_admin').checked = user.is_admin == 1;
+            document.getElementById('modal-title').innerText = 'Benutzer bearbeiten';
+            document.getElementById('user-id').value = user.id;
+            document.getElementById('user-name').value = user.name;
+            document.getElementById('user-login-url').value = '{{ loginBaseUrl }}' + encodeURIComponent(user.hash);
+            document.getElementById('user-is_admin').checked = user.is_admin == 1;
+            document.getElementById('login-url-container').style.display = 'block';
+            
+            // Delete button only if not self
+            if (user.id == {{ currentUser.id }}) {
+                document.getElementById('delete-container').style.display = 'none';
+            } else {
+                document.getElementById('delete-container').style.display = 'block';
+            }
             
             // Reset copy icon
             const iconBtn = document.getElementById('copy-icon-btn');
-            iconBtn.classList.remove('copied');
+            if (iconBtn) {
+                iconBtn.classList.remove('copied');
+            }
 
-            document.getElementById('editDialog').style.display = 'flex';
-            
+            openModal();
+        }
+
+        function openModal() {
+            document.getElementById('userModal').style.display = 'flex';
             // Push state to history so back button can close the modal
             history.pushState({modalOpen: true}, '');
         }
 
-        function closeEditDialog(fromHistory = false) {
-            document.getElementById('editDialog').style.display = 'none';
+        function closeUserModal(fromHistory = false) {
+            document.getElementById('userModal').style.display = 'none';
             if (!fromHistory && history.state && history.state.modalOpen) {
                 history.back();
             }
         }
         // Schließen bei Klick außerhalb
         window.onclick = function(event) {
-            let modal = document.getElementById('editDialog');
+            let modal = document.getElementById('userModal');
             if (event.target == modal) {
-                closeEditDialog();
+                closeUserModal();
             }
         }
         // Handle back button
         window.onpopstate = function(event) {
-            if (document.getElementById('editDialog').style.display === 'flex') {
-                closeEditDialog(true);
+            if (document.getElementById('userModal').style.display === 'flex') {
+                closeUserModal(true);
             }
         };
     </script>
