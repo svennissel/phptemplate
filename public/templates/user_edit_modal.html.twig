@@ -21,13 +21,13 @@
                     <input type="checkbox" name="is_admin" id="user-is_admin" style="width: auto;"> Admin-Rechte
                 </label>
 
-                <div id="delete-container" style="margin-top: 1rem; display: none;">
-                    <button type="submit" name="action" value="delete" class="btn btn-danger" style="width: 100%; margin-top: 0;" onclick="return confirm('Benutzer wirklich löschen?')">Benutzer löschen</button>
-                </div>
-
                 <div style="display: flex; gap: 1rem; margin-top: 1rem;">
                     <button type="submit" name="action" value="save" class="btn btn-primary" style="flex: 1; margin-top: 0;">Speichern</button>
                     <button type="button" class="btn btn-primary" style="flex: 1; margin-top: 0; background: var(--text-muted);" onclick="closeUserModal()">Abbrechen</button>
+                </div>
+
+                <div id="delete-container" style="margin-top: 1rem; display: none;">
+                    <button type="submit" name="action" value="delete" class="btn btn-danger" style="width: 100%; margin-top: 0;" onclick="return confirm('Benutzer wirklich löschen?')">Benutzer löschen</button>
                 </div>
             </form>
         </div>

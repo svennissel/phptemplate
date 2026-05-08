@@ -10,9 +10,9 @@ if (!file_exists(__DIR__ . '/config.php')) {
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/twig.php';
 
-requireLogin();
+$currentUser = requireLogin();
 
 echo $twig->render('start.html.twig', [
-    'currentUser' => getCurrentUser(),
+    'currentUser' => $currentUser,
     'activePage'  => 'start',
 ]);

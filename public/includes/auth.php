@@ -21,11 +21,11 @@ session_start([
 ]);
 
 function isLoggedIn(): bool {
-    return isset($_SESSION['hash']);
+    return isset($_SESSION[SESSION_HASH_KEY]);
 }
 
 function getLoginHash(): ?string {
-    return $_SESSION['hash'] ?? null;
+    return $_SESSION[SESSION_HASH_KEY] ?? null;
 }
 
 /**
@@ -52,8 +52,8 @@ function loginByHash(string $hash): bool {
     $user = $stmt->fetch();
     if (!$user) return false;
 
-    $_SESSION['hash'] = $user['hash'];
-    setcookie('hash', $user['hash'], [
+    $_SESSION[SESSION_HASH_KEY] = $user['hash'];
+    setcookie(LOGIN_COOKIE_NAME, $user['hash'], [
         'expires'  => time() + COOKIE_LIFETIME,
         'path'     => '/',
         'domain'   => $_SERVER['SERVER_NAME'] ?? '',
@@ -66,8 +66,8 @@ function loginByHash(string $hash): bool {
 
 function logout(): void {
     session_destroy();
-    unset($_COOKIE['hash']);
-    setcookie('hash', '', [
+    unset($_COOKIE[LOGIN_COOKIE_NAME]);
+    setcookie(LOGIN_COOKIE_NAME, '', [
         'expires'  => 1,
         'path'     => '/',
         'domain'   => $_SERVER['SERVER_NAME'] ?? '',
@@ -80,9 +80,12 @@ function logout(): void {
 /**
  * Erfordert einen eingeloggten Benutzer; leitet sonst zur Login-Seite weiter.
  */
-function requireLogin(): void {
-    if (isLoggedIn()) return;
-    if (isset($_COOKIE['hash']) && loginByHash($_COOKIE['hash'])) return;
+function requireLogin(): array {
+    $currentUser = getCurrentUser();
+    if ($currentUser != null)
+        return $currentUser;
+    if (isset($_COOKIE[LOGIN_COOKIE_NAME]) && loginByHash($_COOKIE[LOGIN_COOKIE_NAME]))
+        return getCurrentUser();
     header('Location: login.php');
     exit;
 }

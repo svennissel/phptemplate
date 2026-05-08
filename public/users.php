@@ -12,8 +12,7 @@ require_once __DIR__ . '/includes/twig.php';
 require_once __DIR__ . '/includes/url.php';
 require_once __DIR__ . '/includes/hash.php';
 
-requireLogin();
-$currentUser = getCurrentUser();
+$currentUser = requireLogin();
 
 if (empty($currentUser['is_admin'])) {
     header('Location: start.php');

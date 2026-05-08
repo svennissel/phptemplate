@@ -14,11 +14,9 @@
 <body>
 <div class="app">
     {% block header %}
-        {% if currentUser is defined and currentUser %}
-            <header class="topbar">
-                <div class="topbar-title">{% block pageTitle %}phptemplate{% endblock %}</div>
-            </header>
-        {% endif %}
+        <header class="topbar">
+            <div class="topbar-title">{% block pageTitle %}phptemplate{% endblock %}</div>
+        </header>
     {% endblock %}
 
     <main class="content">
@@ -26,8 +24,8 @@
     </main>
 
     {% block nav %}
-        {% if currentUser is defined and currentUser %}
-            <nav class="bottom-nav" aria-label="Hauptnavigation">
+        <nav class="bottom-nav" aria-label="Hauptnavigation">
+            {% if currentUser is defined and currentUser %}
                 <a href="start.php" class="nav-item {{ activePage == 'start' ? 'active' : '' }}">
                     <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
                     <span class="nav-label">Start</span>
@@ -42,8 +40,8 @@
                     <span class="nav-icon"><i class="fa-solid fa-user"></i></span>
                     <span class="nav-label">Profil</span>
                 </a>
-            </nav>
-        {% endif %}
+            {% endif %}
+        </nav>
     {% endblock %}
 </div>
 </body>

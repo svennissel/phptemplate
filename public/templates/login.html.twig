@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Anmelden{% endblock %}
+{% block pageTitle %}Anmelden{% endblock %}
 
 {% block content %}
-    <section class="centered-card">
-        <h1>Anmelden</h1>
+    <section class="card-list">
         {% if error %}
             <p class="error">{{ error }}</p>
         {% else %}

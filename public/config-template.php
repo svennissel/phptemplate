@@ -43,3 +43,13 @@ const COOKIE_LIFETIME = 31536000;
  * Wenn leer, wird kein Cache verwendet.
  */
 const TWIG_CACHE_DIR = '{TWIG_CACHE_DIR}';
+
+/**
+ * Name der PHP-Session.
+ */
+const SESSION_NAME = 'PHPTEMPLATE_SESSID';
+
+/**
+ * Name des Login-Cookies.
+ */
+const LOGIN_COOKIE_NAME = 'hash';

@@ -12,11 +12,11 @@ require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/twig.php';
 
 // Auto-Login per Cookie, falls noch keine Session aktiv ist
-if (!isLoggedIn() && isset($_COOKIE['hash'])) {
-    loginByHash($_COOKIE['hash']);
+if (getCurrentUser() == null && isset($_COOKIE[LOGIN_COOKIE_NAME])) {
+    loginByHash($_COOKIE[LOGIN_COOKIE_NAME]);
 }
 
-if (!isLoggedIn()) {
+if (getCurrentUser() == null) {
     header('Location: login.php');
     exit;
 }

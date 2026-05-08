@@ -14,7 +14,7 @@ require_once __DIR__ . '/includes/twig.php';
 
 $error = '';
 
-$hash = $_GET['hash'] ?? $_COOKIE['hash'] ?? $_SESSION['hash'] ?? '';
+$hash = $_GET['hash'] ?? $_COOKIE[LOGIN_COOKIE_NAME] ?? $_SESSION[SESSION_HASH_KEY] ?? '';
 if ($hash !== '') {
     if (loginByHash($hash)) {
         header('Location: start.php');

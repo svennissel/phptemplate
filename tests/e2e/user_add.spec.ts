@@ -6,6 +6,9 @@ test.describe('Benutzer hinzufügen', () => {
   test('sollte einen neuen Benutzer erfolgreich anlegen', async ({ page }) => {
     // Login als Admin
     await page.goto(`/login.php?hash=${adminUserHash}`);
+    await expect(page).toHaveURL(/start.php/);
+
+    await page.goto(`/users.php`);
     await expect(page).toHaveURL(/users.php/);
 
     // Klick auf "Benutzer hinzufügen"
@@ -36,5 +39,23 @@ test.describe('Benutzer hinzufügen', () => {
     // Wir suchen die Karte, die "Neu Angelegter User" enthält, und prüfen auf das Badge
     const userCard = page.locator('.card', { hasText: 'Neu Angelegter User' });
     await expect(userCard.locator('.badge')).toContainText('Admin');
+
+    // Löschen des neu angelegten Benutzers
+    // Dialog öffnen durch Klick auf die Karte
+    await userCard.click();
+
+    // Lösch-Button im Dialog klicken
+    const deleteButton = page.locator('button[name="action"][value="delete"]');
+    await expect(deleteButton).toBeVisible();
+
+    // Confirm-Dialog abfangen und akzeptieren
+    page.once('dialog', dialog => dialog.accept());
+    await deleteButton.click();
+
+    // Wir sollten wieder auf users.php sein
+    await expect(page).toHaveURL(/users.php/);
+
+    // Der Benutzer sollte nicht mehr in der Liste sein
+    await expect(page.locator('.card-title', { hasText: 'Neu Angelegter User' })).not.toBeVisible();
   });
 });

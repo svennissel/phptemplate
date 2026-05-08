@@ -63,7 +63,7 @@ class AuthTest extends TestCase
 
     public function testIsLoggedInReturnsTrueWhenSet()
     {
-        $_SESSION['hash'] = 'test_hash';
+        $_SESSION[SESSION_HASH_KEY] = 'test_hash';
         $this->assertTrue(isLoggedIn());
     }
 
@@ -74,7 +74,7 @@ class AuthTest extends TestCase
 
     public function testGetLoginHashReturnsHashWhenSet()
     {
-        $_SESSION['hash'] = 'test_hash';
+        $_SESSION[SESSION_HASH_KEY] = 'test_hash';
         $this->assertEquals('test_hash', getLoginHash());
     }
 
@@ -98,7 +98,7 @@ class AuthTest extends TestCase
 
     public function testGetCurrentUserReturnsUserWhenLoggedIn()
     {
-        $_SESSION['hash'] = 'my_hash';
+        $_SESSION[SESSION_HASH_KEY] = 'my_hash';
         
         $stmtMock = $this->createMock(PDOStatement::class);
         $stmtMock->method('fetch')->willReturn(['id' => 1, 'name' => 'Test User', 'hash' => 'my_hash']);
@@ -138,6 +138,6 @@ class AuthTest extends TestCase
         // In PHPUnit Tests werden Header oft gesammelt.
         
         $this->assertTrue(loginByHash($hash));
-        $this->assertEquals($hash, $_SESSION['hash']);
+        $this->assertEquals($hash, $_SESSION[SESSION_HASH_KEY]);
     }
 }
