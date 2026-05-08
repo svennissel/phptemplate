@@ -45,11 +45,11 @@ const COOKIE_LIFETIME = 31536000;
 const TWIG_CACHE_DIR = '{TWIG_CACHE_DIR}';
 
 /**
- * Name der PHP-Session.
- */
-const SESSION_NAME = 'PHPTEMPLATE_SESSID';
-
-/**
  * Name des Login-Cookies.
  */
-const LOGIN_COOKIE_NAME = 'hash';
+const LOGIN_COOKIE_NAME = 'phpteamplate_hash';
+
+/**
+ * Key unter dem der login hash in der session gespeichert wird
+ */
+const SESSION_HASH_KEY = LOGIN_COOKIE_NAME;

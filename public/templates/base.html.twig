@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#1976d2">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <title>{% block title %}phptemplate{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="css/fontawesome.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/form.js" defer></script>
@@ -15,7 +15,7 @@
 <div class="app">
     {% block header %}
         <header class="topbar">
-            <div class="topbar-title">{% block pageTitle %}phptemplate{% endblock %}</div>
+            <div class="topbar-title">{% block pageTitle %}{% endblock %}</div>
         </header>
     {% endblock %}
 
