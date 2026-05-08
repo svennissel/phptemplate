@@ -7,7 +7,16 @@ require_once __DIR__ . '/../config.php';
  * @var PDO $pdo
  */
 try {
-    $dsn = 'mysql:host=' . DATABASE_HOST . ';dbname=' . DATABASE . ';charset=utf8mb4';
+    $database = DATABASE;
+    $overrideFile = __DIR__ . '/../../.test_database';
+    if (file_exists($overrideFile)) {
+        $overrideDb = trim(file_get_contents($overrideFile));
+        if (!empty($overrideDb)) {
+            $database = $overrideDb;
+        }
+    }
+
+    $dsn = 'mysql:host=' . DATABASE_HOST . ';dbname=' . $database . ';charset=utf8mb4';
     $pdo = new PDO($dsn, DATABASE_USER, DATABASE_PASSWORD, [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
