@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Installation{% endblock %}
+{% block pageTitle %}Installation{% endblock %}
 
 {% block content %}
 <ul class="card-list">
     <li class="card">
         <div class="card-main">
-            <div class="card-title">Installation</div>
             <p class="muted">Bitte geben Sie die Verbindungsdaten zur MySQL-Datenbank ein.</p>
 
             {% if error %}
@@ -30,7 +30,7 @@
                 <input id="admin_name" name="admin_name" type="text" value="{{ admin_name }}" required>
 
                 <label for="twig_cache_dir">Twig-Cache-Verzeichnis (optional)</label>
-                <input id="twig_cache_dir" name="twig_cache_dir" type="text" value="{{ twig_cache_dir }}" placeholder="../var/cache/twig">
+                <input id="twig_cache_dir" name="twig_cache_dir" type="text" value="{{ twig_cache_dir }}" placeholder="../cache/twig">
                 <p class="muted small">Lassen Sie dieses Feld leer, um den Cache zu deaktivieren.</p>
 
                 <button type="submit" class="btn btn-primary">Installieren</button>
