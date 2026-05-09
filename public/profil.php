@@ -11,6 +11,7 @@ if (!file_exists(__DIR__ . '/config.php')) {
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/twig.php';
 require_once __DIR__ . '/includes/url.php';
+require_once __DIR__ . '/includes/shopping.php';
 
 $currentUser = requireLogin();
 $id      = (int)$currentUser['id'];
@@ -28,6 +29,7 @@ if (!$user) {
         'user'        => null,
         'loginUrl'    => null,
         'activePage'  => 'profil',
+        'lists'       => getShoppingLists(),
     ]);
     exit;
 }
@@ -39,4 +41,5 @@ echo $twig->render('profil.html.twig', [
     'user'        => $user,
     'loginUrl'    => $loginUrl,
     'activePage'  => 'profil',
+    'lists'       => getShoppingLists(),
 ]);

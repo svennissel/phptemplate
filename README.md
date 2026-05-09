@@ -7,7 +7,7 @@ Dieses Projekt wurde aus der PHPTemplate Vorlage erstellt. Um weitere Anpassunge
 
 ### 2. Metadaten & Manifest
 - **`public/site.webmanifest`**: Ändern Sie `name` (Zeile 2) und `short_name` (Zeile 3) auf den Namen Ihres neuen Projekts.
-- **`composer.json`**: Passen Sie den Projektnamen `"name": "snissel/phptemplate"` (Zeile 2) und den Autor (Zeile 28) an.
+- **`public/composer.json`**: Passen Sie den Projektnamen `"name": "snissel/phptemplate"` (Zeile 2) und den Autor (Zeile 28) an.
 - **`package.json`**: Ändern Sie den Namen `"name": "phpteamplate-tests"` (Zeile 2).
 
 ### 3. Design & Templates

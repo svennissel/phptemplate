@@ -14,14 +14,17 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "public/includes/"
+      "App\\": "includes/"
     }
 
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests/"
+      "Tests\\": "../tests/"
     }
+  },
+  "config": {
+    "vendor-dir": "vendor"
   },
   "authors": [
     {

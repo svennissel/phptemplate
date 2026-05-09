@@ -59,7 +59,64 @@ body {
     justify-content: space-between;
     box-shadow: 0 1px 3px var(--shadow-light);
 }
-.topbar-title { font-weight: 600; font-size: 1.05rem; }
+.topbar-title { font-weight: 600; font-size: 1.05rem; flex: 1; }
+.topbar-actions { display: flex; align-items: center; gap: 0.5rem; }
+.topbar-btn {
+    background: transparent;
+    border: 0;
+    color: var(--bg-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.topbar-btn:active { background: rgba(255, 255, 255, 0.2); }
+
+/* Einkaufzettel: Suchzeile zum Hinzufügen */
+.add-item-form { margin-bottom: 1rem; }
+.search-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+.search-row input[type="text"] {
+    flex: 1;
+    margin: 0;
+    line-height: normal;
+}
+.search-btn {
+    margin: 0;
+    height: 3rem;
+    width: 3rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Einkaufzettel: Items mit Undo-Zustand */
+.shopping-item-row { gap: 0.5rem; }
+.shopping-item-main { flex: 1; cursor: pointer; padding: 0.3rem 0; }
+.shopping-item.to-delete .card-title {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+.shopping-item-undo {
+    background: transparent;
+    border: 0;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.shopping-item-undo:active { background: rgba(0, 0, 0, 0.05); }
 
 
 /* Content */
@@ -181,7 +238,6 @@ input[type="text"], input[type="password"], input[type="email"] {
 input:focus { outline: 2px solid var(--primary-color); border-color: transparent; }
 
 .btn {
-    margin-top: 1rem;
     border: 0;
     padding: 0.85rem 1rem;
     border-radius: 8px;

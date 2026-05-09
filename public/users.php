@@ -11,6 +11,7 @@ require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/twig.php';
 require_once __DIR__ . '/includes/url.php';
 require_once __DIR__ . '/includes/hash.php';
+require_once __DIR__ . '/includes/shopping.php';
 
 $currentUser = requireLogin();
 
@@ -80,4 +81,5 @@ echo $twig->render('users.html.twig', [
     'csrfToken'   => generateCsrfToken(),
     'error'       => $error,
     'loginBaseUrl' => $loginBaseUrl,
+    'lists'        => getShoppingLists(),
 ]);

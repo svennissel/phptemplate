@@ -1,17 +1,134 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Start{% endblock %}
-{% block pageTitle %}Start{% endblock %}
+{% block title %}{{ currentList ? currentList.name : 'Einkaufzettel' }}{% endblock %}
+{% block pageTitle %}{{ currentList ? currentList.name : 'Einkaufzettel' }}{% endblock %}
+
+{% block topbarActions %}
+    <button type="button" class="topbar-btn" onclick="openCreateListDialog()" aria-label="Neuen Einkaufzettel erstellen">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+{% endblock %}
 
 {% block content %}
-    <ul class="card-list">
-            <li class="card">
-                <div class="card-link">
-                    <div class="card-main">
-                        <div class="card-title">Hallo Welt</div>
-                    </div>
-                    <span class="badge">test</span>
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if currentList is null %}
+        <p class="muted">Noch kein Einkaufzettel vorhanden. Erstelle einen über das <i class="fa-solid fa-plus"></i> oben.</p>
+    {% else %}
+        <form method="post" class="form add-item-form">
+            <input type="hidden" name="csrf_token" value="{{ csrfToken }}">
+            <input type="hidden" name="action" value="add_item">
+            <input type="hidden" name="list_id" value="{{ currentList.id }}">
+            <div class="search-row">
+                <input type="text" name="name" placeholder="Eintrag hinzufügen..." required autocomplete="off">
+                <button type="submit" class="btn btn-primary search-btn" aria-label="Hinzufügen">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+        </form>
+
+        {% if items is empty %}
+            <p class="muted">Der Einkaufzettel ist leer.</p>
+        {% else %}
+            <ul class="card-list shopping-items">
+                {% for item in items %}
+                    <li class="card shopping-item" data-item-id="{{ item.id }}">
+                        <div class="card-link shopping-item-row">
+                            <div class="card-main shopping-item-main" onclick="markItemForDeletion(this.closest('.shopping-item'))">
+                                <div class="card-title">{{ item.name }}</div>
+                            </div>
+                            <button type="button" class="shopping-item-undo" onclick="undoItemDeletion(this.closest('.shopping-item'))" aria-label="Rückgängig" style="display:none;">
+                                <i class="fa-solid fa-rotate-left"></i>
+                            </button>
+                        </div>
+                        <form method="post" class="shopping-item-delete-form" style="display:none;">
+                            <input type="hidden" name="csrf_token" value="{{ csrfToken }}">
+                            <input type="hidden" name="action" value="delete_item">
+                            <input type="hidden" name="list_id" value="{{ currentList.id }}">
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
+
+    <div id="listModal" class="modal">
+        <div class="modal-content">
+            <h2 class="page-title">Neuen Einkaufzettel erstellen</h2>
+            <form method="post" class="form">
+                <input type="hidden" name="csrf_token" value="{{ csrfToken }}">
+                <input type="hidden" name="action" value="create_list">
+
+                <label for="list-name">Name</label>
+                <input type="text" name="name" id="list-name" required>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1; margin-top: 0;">Erstellen</button>
+                    <button type="button" class="btn btn-primary" style="flex: 1; margin-top: 0; background: var(--text-muted);" onclick="closeListModal()">Abbrechen</button>
                 </div>
-            </li>
-    </ul>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const undoTimers = {};
+
+        function markItemForDeletion(itemEl) {
+            if (!itemEl || itemEl.classList.contains('to-delete')) return;
+            const itemId = itemEl.dataset.itemId;
+
+            itemEl.classList.add('to-delete');
+            itemEl.querySelector('.shopping-item-main').style.pointerEvents = 'none';
+            itemEl.querySelector('.shopping-item-undo').style.display = 'inline-flex';
+
+            undoTimers[itemId] = setTimeout(function () {
+                const form = itemEl.querySelector('.shopping-item-delete-form');
+                if (form) {
+                    form.submit();
+                }
+            }, 5000);
+        }
+
+        function undoItemDeletion(itemEl) {
+            if (!itemEl) return;
+            const itemId = itemEl.dataset.itemId;
+            if (undoTimers[itemId]) {
+                clearTimeout(undoTimers[itemId]);
+                delete undoTimers[itemId];
+            }
+            itemEl.classList.remove('to-delete');
+            itemEl.querySelector('.shopping-item-main').style.pointerEvents = '';
+            itemEl.querySelector('.shopping-item-undo').style.display = 'none';
+        }
+
+        function openCreateListDialog() {
+            document.getElementById('list-name').value = '';
+            document.getElementById('listModal').style.display = 'flex';
+            history.pushState({listModalOpen: true}, '');
+            setTimeout(function () { document.getElementById('list-name').focus(); }, 0);
+        }
+
+        function closeListModal(fromHistory = false) {
+            document.getElementById('listModal').style.display = 'none';
+            if (!fromHistory && history.state && history.state.listModalOpen) {
+                history.back();
+            }
+        }
+
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('listModal');
+            if (event.target === modal) {
+                closeListModal();
+            }
+        });
+
+        window.addEventListener('popstate', function () {
+            if (document.getElementById('listModal').style.display === 'flex') {
+                closeListModal(true);
+            }
+        });
+    </script>
 {% endblock %}

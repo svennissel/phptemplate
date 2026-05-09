@@ -10,7 +10,7 @@ if (file_exists(__DIR__ . '/config.php')) {
 }
 
 require_once __DIR__ . '/includes/hash.php';
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 // TWIG_CACHE_DIR als Dummy definieren, damit twig.php nicht fehlschlägt
 if (!defined('TWIG_CACHE_DIR')) {
@@ -29,7 +29,7 @@ $context = [
     'database_user'     => $_POST['database_user'] ?? '',
     'database_password' => $_POST['database_password'] ?? '',
     'admin_name'        => $_POST['admin_name'] ?? '',
-    'twig_cache_dir'    => $_POST['twig_cache_dir'] ?? '../var/twig',
+    'twig_cache_dir'    => $_POST['twig_cache_dir'] ?? '../cache/twig',
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

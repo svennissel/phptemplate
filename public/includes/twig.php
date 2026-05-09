@@ -3,7 +3,7 @@
  * Twig-Bootstrap. Initialisiert eine globale Twig-Environment-Instanz,
  * die in allen Seiten zum Rendern der Templates verwendet wird.
  */
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
