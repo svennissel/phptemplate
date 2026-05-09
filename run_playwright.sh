@@ -3,8 +3,8 @@
 #npx playwright install chromium
 #npx playwright install firefox
 
-DB_USER="phptemplate"
-DB_PASS='phptemplate'
+DB_USER="einkauf"
+DB_PASS='einkauf'
 
 # Test-Datenbank aus Template erstellen
 echo "Erstelle Test-Datenbank..."

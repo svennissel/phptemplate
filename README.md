@@ -1,6 +1,6 @@
-# Projekterstellung aus dem PHPTemplate
+# Einkauf Projekt
 
-Dieses Projekt dient als Vorlage (Template) für neue PHP-Anwendungen. Um aus dieser Vorlage ein neues Projekt zu erstellen, müssen die folgenden Stellen angepasst werden:
+Dieses Projekt wurde aus der PHPTemplate Vorlage erstellt. Um weitere Anpassungen vorzunehmen, folgen Sie den Anweisungen:
 
 ### 1. Konfiguration
 - **`public/config-template.php`**: Passen Sie hier den Standardwert für `SESSION_NAME` (Zeile 50) an, um Konflikte mit anderen Projekten auf demselben Server zu vermeiden.

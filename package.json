@@ -1,7 +1,7 @@
 {
-  "name": "phpteamplate-tests",
+  "name": "einkauf-tests",
   "version": "1.0.0",
-  "description": "Playwright tests for TeamControl",
+  "description": "Playwright tests for Einkauf",
   "devDependencies": {
     "@playwright/test": "^1.40.0",
     "@types/node": "^25.1.0",

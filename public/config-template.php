@@ -47,7 +47,7 @@ const TWIG_CACHE_DIR = '{TWIG_CACHE_DIR}';
 /**
  * Name des Login-Cookies.
  */
-const LOGIN_COOKIE_NAME = 'phpteamplate_hash';
+const LOGIN_COOKIE_NAME = 'einkauf_hash';
 
 /**
  * Key unter dem der login hash in der session gespeichert wird

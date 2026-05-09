@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('PHP Template App', () => {
+test.describe('Einkauf App', () => {
   const testUserHash = 'test-user-hash-123456'; 
 
   test('sollte sich ausloggen können', async ({ page }) => {

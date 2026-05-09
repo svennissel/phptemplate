@@ -10,7 +10,7 @@ export default defineConfig({
   reporter: [['html', { open: 'never' }]],
   timeout: 10000,
   use: {
-    baseURL: 'http://phptemplate.de/',
+    baseURL: 'http://einkauf.de/',
     trace: 'on-first-retry',
     locale: 'de-DE',
     timezoneId: 'Europe/Berlin',

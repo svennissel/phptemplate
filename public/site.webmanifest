@@ -1,6 +1,6 @@
 {
-  "name": "PHPTemplate",
-  "short_name": "Template",
+  "name": "Einkauf",
+  "short_name": "Einkauf",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,7 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#ffffff",
+  "theme_color": "#b197fc",
   "background_color": "#ffffff",
   "display": "standalone"
 }

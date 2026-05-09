@@ -1,5 +1,5 @@
 {
-  "name": "snissel/phptemplate",
+  "name": "snissel/einkauf",
   "type": "project",
   "require": {
     "php": ">=8.5",
