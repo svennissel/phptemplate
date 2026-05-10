@@ -137,17 +137,17 @@ body {
 
 /* Bottom nav */
 .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 480px;
-    background: var(--bg-color);
-    border-top: 1px solid var(--border-color);
-    display: flex;
-    z-index: 10;
-    padding-bottom: env(safe-area-inset-bottom);
+    position: fixed; /* Fixiert am Viewport */
+    bottom: 0; /* Ganz unten platzieren */
+    left: 50%; /* Zentrierung in Kombination mit transform */
+    transform: translateX(-50%); /* Zentriert die Leiste horizontal (wichtig bei max-width > screen-width) */
+    width: 100%; /* Volle Breite bis max-width */
+    max-width: 480px; /* Begrenzung für Mobile-First Design (Desktop-Zentrierung) */
+    background: var(--bg-color); /* Hintergrundfarbe aus Theme */
+    border-top: 1px solid var(--border-color); /* Trennlinie zum Inhalt */
+    display: flex; /* Flexbox für gleichmäßige Verteilung der Nav-Items */
+    z-index: 10; /* Über dem Seiteninhalt schwebend */
+    /*padding-bottom: env(safe-area-inset-bottom); !* Berücksichtigung von Safe-Areas (z.B. iPhone Notch/Home-Indikator) *!*/
 }
 .nav-item {
     flex: 1;
