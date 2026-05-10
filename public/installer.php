@@ -29,7 +29,7 @@ $context = [
     'database_user'     => $_POST['database_user'] ?? '',
     'database_password' => $_POST['database_password'] ?? '',
     'admin_name'        => $_POST['admin_name'] ?? '',
-    'twig_cache_dir'    => $_POST['twig_cache_dir'] ?? '../var/twig',
+    'twig_cache_dir'    => $_POST['twig_cache_dir'] ?? '../cache/twig',
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
