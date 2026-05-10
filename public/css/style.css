@@ -16,7 +16,7 @@
     --error-text: #b00020;
     --danger-button: var(--error-text);
     --danger-button-text: #fff;
-    --border-color: #eee;
+    --border-color: #d8d8d8;
     --shadow-light: rgba(0, 0, 0, 0.06);
 }
 
