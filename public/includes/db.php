@@ -22,6 +22,18 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES   => false,
     ]);
+
+    // Automatische Migration
+    $stmt = $pdo->query("SELECT value FROM meta_info WHERE `key` = 'schema_version'");
+    $version = $stmt->fetchColumn();
+
+    if ($version === '1') {
+        $migrationFile = __DIR__ . '/../sql/migration_v2.sql';
+        if (file_exists($migrationFile)) {
+            $sql = file_get_contents($migrationFile);
+            $pdo->exec($sql);
+        }
+    }
 } catch (PDOException $e) {
     http_response_code(500);
     exit('Datenbankverbindung fehlgeschlagen.');

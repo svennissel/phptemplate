@@ -21,6 +21,7 @@
 
 ## 4. Database Schema
 *   **Migrations**: Changes to the database schema must be updated in both `public/sql/schema.sql` (for new installations) and `tests/setup_test_db.sql` (for tests).
+*   **Migrations scripts**: For each database change, a migration script must be created in `public/sql/`. 
 
 ## 5. Quality Assurance (Testing)
 *   **Test Coverage**: New features (e.g., new pages or complex logic) must be secured by corresponding Playwright tests in `tests/e2e/` or PHPUnit tests in `tests/`.

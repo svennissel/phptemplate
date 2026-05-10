@@ -99,10 +99,44 @@ body {
 
 /* Einkaufzettel: Items mit Undo-Zustand */
 .shopping-item-row { gap: 0.5rem; min-height: 2.8rem; }
-.shopping-item-main { flex: 1; padding: 0.3rem 0; }
+.shopping-item-main { flex: 1; padding: 0.3rem 0; display: flex; align-items: center; gap: 0.5rem; flex-direction: row; }
+
+.amount-control {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.amount-btn {
+    background: var(--primary-color);
+    color: var(--font-color-on-primary);
+    border: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.amount-btn:active { background: var(--primary-active); }
+
+.amount-value {
+    min-width: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+}
+
 .shopping-item.to-delete .card-title {
     text-decoration: line-through;
     color: var(--text-muted);
+}
+
+.shopping-item.to-delete .amount-btn {
+    background: var(--text-muted);
+    pointer-events: none;
 }
 .shopping-item-delete,
 .shopping-item-undo {
@@ -157,7 +191,8 @@ body {
     text-decoration: none;
     color: inherit;
 }
-.card-main { display: flex; flex-direction: column; }
+.card-main { display: flex; }
+.card-one-column {flex-direction: column;}
 .card-title { font-weight: 600; }
 .card-subtitle { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.15rem; }
 

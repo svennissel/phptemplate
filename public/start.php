@@ -56,6 +56,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             header('Location: start.php?id=' . $listId);
             exit;
+        } elseif ($action === 'update_item_amount') {
+            $itemId = (int)($_POST['item_id'] ?? 0);
+            $listId = (int)($_POST['list_id'] ?? 0);
+            $delta  = (int)($_POST['delta'] ?? 0);
+            if ($itemId > 0 && $delta !== 0) {
+                $stmt = $pdo->prepare('UPDATE shopping_list_items SET amount = GREATEST(1, amount + ?) WHERE id = ?');
+                $stmt->execute([$delta, $itemId]);
+            }
+            header('Location: start.php?id=' . $listId);
+            exit;
         }
     }
 }

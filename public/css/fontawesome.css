@@ -46,6 +46,7 @@
 .fa-copy:before { content: "\f0c5"; }
 .fa-check:before { content: "\f00c"; }
 .fa-plus:before { content: "\2b"; }
+.fa-minus:before { content: "\f068"; }
 .fa-rotate-left:before { content: "\f2ea"; }
 .fa-basket-shopping:before { content: "\f291"; }
 .fa-trash-can:before { content: "\f2ed"; }

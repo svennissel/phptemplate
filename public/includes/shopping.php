@@ -35,7 +35,7 @@ function getShoppingList(int $id): ?array {
  */
 function getShoppingListItems(int $listId): array {
     global $pdo;
-    $stmt = $pdo->prepare('SELECT id, name FROM shopping_list_items WHERE list_id = ? ORDER BY created_at ASC, id ASC');
+    $stmt = $pdo->prepare('SELECT id, name, amount FROM shopping_list_items WHERE list_id = ? ORDER BY created_at ASC, id ASC');
     $stmt->execute([$listId]);
     return $stmt->fetchAll();
 }
