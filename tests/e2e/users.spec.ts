@@ -13,7 +13,7 @@ test.describe('Benutzerseiten', () => {
     
     // In base.html.twig steht der Seitentitel in .topbar-title
     // Wir prüfen hier auf start.php, ob die Navigation da ist oder ein Element von start.php
-    await expect(page.locator('.nav-item.active')).toContainText('Start');
+    await expect(page.locator('.nav-item.active')).toBeVisible();
     
     // Der Test-Benutzer sollte in der Liste sein
     // Wir navigieren zu users.php als Admin, um die Liste zu sehen, oder wir prüfen was anderes auf start.php

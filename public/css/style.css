@@ -98,12 +98,13 @@ body {
 }
 
 /* Einkaufzettel: Items mit Undo-Zustand */
-.shopping-item-row { gap: 0.5rem; }
-.shopping-item-main { flex: 1; cursor: pointer; padding: 0.3rem 0; }
+.shopping-item-row { gap: 0.5rem; min-height: 2.8rem; }
+.shopping-item-main { flex: 1; padding: 0.3rem 0; }
 .shopping-item.to-delete .card-title {
     text-decoration: line-through;
     color: var(--text-muted);
 }
+.shopping-item-delete,
 .shopping-item-undo {
     background: transparent;
     border: 0;
@@ -116,6 +117,10 @@ body {
     align-items: center;
     justify-content: center;
 }
+.shopping-item-delete {
+    color: var(--text-muted);
+}
+.shopping-item-delete:active,
 .shopping-item-undo:active { background: rgba(0, 0, 0, 0.05); }
 
 
