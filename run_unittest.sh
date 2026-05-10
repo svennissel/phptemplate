@@ -1,2 +1,2 @@
 #!/bin/bash
-php vendor/bin/phpunit
+php public/vendor/bin/phpunit

@@ -10,7 +10,7 @@ if (file_exists(__DIR__ . '/config.php')) {
 }
 
 require_once __DIR__ . '/includes/hash.php';
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 // TWIG_CACHE_DIR als Dummy definieren, damit twig.php nicht fehlschlägt
 if (!defined('TWIG_CACHE_DIR')) {

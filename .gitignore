@@ -6,6 +6,7 @@ teamcontrol_*.zip
 
 # Composer
 /vendor/
+/public/vendor/
 composer.phar
 composer.lock
 
