@@ -13,11 +13,36 @@ function isSecureServer(): bool {
     return false;
 }
 
+/**
+ * Ermittelt die Hauptdomain aus dem Servernamen.
+ * Entfernt Subdomains, sodass z.B. phptemplate.nissel.it zu nissel.it wird.
+ */
+function getMainDomain(): string {
+    $host = $_SERVER['SERVER_NAME'] ?? '';
+    if (filter_var($host, FILTER_VALIDATE_IP)) {
+        return $host;
+    }
+    $parts = explode('.', $host);
+    $numParts = count($parts);
+    if ($numParts <= 2) {
+        return $host;
+    }
+    // Spezialfall für localhost oder ähnliches
+    if ($numParts === 1) {
+        return $host;
+    }
+    // Letzte zwei Teile nehmen (z.B. nissel.it)
+    return $parts[$numParts - 2] . '.' . $parts[$numParts - 1];
+}
+
+$mainDomain = getMainDomain();
+
 session_start([
     'cookie_lifetime' => COOKIE_LIFETIME,
     'cookie_httponly' => true,
-    'cookie_samesite' => 'Strict',
+    'cookie_samesite' => 'Lax',
     'cookie_secure'   => isSecureServer(),
+    'cookie_domain'   => $mainDomain,
 ]);
 
 function isLoggedIn(): bool {
@@ -56,7 +81,7 @@ function loginByHash(string $hash): bool {
     setcookie(LOGIN_COOKIE_NAME, $user['hash'], [
         'expires'  => time() + COOKIE_LIFETIME,
         'path'     => '/',
-        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
+        'domain'   => getMainDomain(),
         'secure'   => isSecureServer(),
         'httponly' => true,
         'samesite' => 'Strict',
@@ -70,7 +95,7 @@ function logout(): void {
     setcookie(LOGIN_COOKIE_NAME, '', [
         'expires'  => 1,
         'path'     => '/',
-        'domain'   => $_SERVER['SERVER_NAME'] ?? '',
+        'domain'   => getMainDomain(),
         'secure'   => isSecureServer(),
         'httponly' => true,
         'samesite' => 'Strict',
