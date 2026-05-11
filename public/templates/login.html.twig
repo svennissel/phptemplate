@@ -11,6 +11,21 @@
             <p class="muted">Bitte verwenden Sie Ihren persönlichen Login-Link.</p>
         {% endif %}
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hashInUrl = urlParams.get('hash');
+            
+            // Wenn kein Hash in der URL ist, aber einer im localStorage, dann diesen nutzen
+            if (!hashInUrl) {
+                const storedHash = localStorage.getItem('einkauf_hash');
+                if (storedHash) {
+                    window.location.href = 'login.php?hash=' + encodeURIComponent(storedHash);
+                }
+            }
+        });
+    </script>
 {% endblock %}
 
 {% block nav %}{% endblock %}

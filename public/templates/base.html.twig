@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="css/fontawesome.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/form.js" defer></script>
+    {% if currentUser is defined and currentUser and currentUser.hash %}
+    <script>
+        localStorage.setItem('einkauf_hash', '{{ currentUser.hash }}');
+    </script>
+    {% endif %}
 </head>
 <body>
 <div class="app">
