@@ -4,6 +4,7 @@
  */
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/shopping.php';
 
 // Authentifizierung prüfen
 $currentUser = getCurrentUser();
@@ -44,13 +45,12 @@ try {
                 $name = trim($payload['name'] ?? '');
                 $tempId = $payload['temp_id'] ?? null;
                 if ($listId > 0 && $name !== '') {
-                    $stmt = $pdo->prepare('INSERT INTO shopping_list_items (list_id, name) VALUES (?, ?)');
-                    $stmt->execute([$listId, $name]);
+                    $serverId = addShoppingListItem($listId, $name);
                     if ($tempId) {
                         $results[] = [
                             'action' => 'add_item',
                             'temp_id' => $tempId,
-                            'server_id' => (int)$pdo->lastInsertId()
+                            'server_id' => $serverId
                         ];
                     }
                 }

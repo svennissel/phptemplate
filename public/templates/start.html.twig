@@ -21,7 +21,8 @@
             <input type="hidden" name="action" value="add_item">
             <input type="hidden" name="list_id" value="{{ currentList.id }}">
             <div class="search-row">
-                <input type="text" name="name" placeholder="Eintrag hinzufügen..." required autocomplete="off">
+                <input type="text" name="name" id="item-input" placeholder="Eintrag hinzufügen..." required autocomplete="off" list="suggestions">
+                <datalist id="suggestions"></datalist>
                 <button type="submit" class="btn btn-primary search-btn" aria-label="Hinzufügen">
                     <i class="fa-solid fa-plus"></i>
                 </button>
@@ -128,6 +129,57 @@
 
         // Formular-Submit für Hinzufügen abfangen
         const addItemForm = document.querySelector('.add-item-form');
+        const itemInput = document.getElementById('item-input');
+        const suggestionsDatalist = document.getElementById('suggestions');
+
+        if (itemInput) {
+            let timeout = null;
+            itemInput.addEventListener('input', function(e) {
+                const q = this.value.trim();
+                const listId = {{ currentList.id|default(0) }};
+
+                // Prüfen ob der Wert aus der Datalist ausgewählt wurde
+                const options = suggestionsDatalist.options;
+                let found = false;
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].value === q) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    // Vorschläge leeren und sofort absenden
+                    suggestionsDatalist.innerHTML = '';
+                    addItemForm.requestSubmit();
+                    return;
+                }
+
+                clearTimeout(timeout);
+                
+                if (q.length < 1 || listId === 0) {
+                    suggestionsDatalist.innerHTML = '';
+                    return;
+                }
+
+                timeout = setTimeout(async () => {
+                    try {
+                        const response = await fetch(`api/suggestions.php?list_id=${listId}&q=${encodeURIComponent(q)}`);
+                        const suggestions = await response.json();
+                        
+                        suggestionsDatalist.innerHTML = '';
+                        suggestions.forEach(s => {
+                            const option = document.createElement('option');
+                            option.value = s;
+                            suggestionsDatalist.appendChild(option);
+                        });
+                    } catch (e) {
+                        console.error('Fehler beim Laden der Vorschläge', e);
+                    }
+                }, 300);
+            });
+        }
+
         if (addItemForm) {
             addItemForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
@@ -137,6 +189,9 @@
                 
                 if (name && listId) {
                     const tempId = 'temp-' + Date.now();
+                    
+                    // Vorschläge leeren
+                    suggestionsDatalist.innerHTML = '';
                     
                     // Sofort in die Liste einfügen
                     let listUl = document.querySelector('.shopping-items');

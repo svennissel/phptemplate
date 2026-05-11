@@ -26,12 +26,37 @@ try {
     // Automatische Migration
     $stmt = $pdo->query("SELECT value FROM meta_info WHERE `key` = 'schema_version'");
     $version = $stmt->fetchColumn();
+    while (true) {
 
-    if ($version === '1') {
-        $migrationFile = __DIR__ . '/../sql/migration_v2.sql';
+        if ($version === false) {
+            // Falls meta_info noch nicht existiert oder kein Eintrag vorhanden ist, abbrechen
+            // Normalerweise wird das Schema durch installer.php oder initiales SQL erstellt.
+            break;
+        }
+
+        $nextVersion = (int)$version + 1;
+        $migrationFile = __DIR__ . '/../sql/migration_v' . $nextVersion . '.sql';
+
         if (file_exists($migrationFile)) {
             $sql = file_get_contents($migrationFile);
             $pdo->exec($sql);
+            
+            // Version in der Datenbank aktualisieren
+            // Falls das Migrationsfile die Version nicht selbst aktualisiert, tun wir es hier sicherheitshalber.
+            // Die meisten Migrationen im Projekt scheinen es aber selbst zu tun (siehe migration_v3.sql).
+            // Um doppelte Updates zu vermeiden und sicherzustellen, dass die Schleife terminiert,
+            // prüfen wir nach der Ausführung erneut die Version.
+            
+            $stmt = $pdo->query("SELECT value FROM meta_info WHERE `key` = 'schema_version'");
+            $newVersion = $stmt->fetchColumn();
+            
+            if ((int)$newVersion === (int)$version) {
+                // Migration hat Version nicht aktualisiert, wir machen es manuell
+                $stmt = $pdo->prepare("UPDATE meta_info SET value = ? WHERE `key` = 'schema_version'");
+                $stmt->execute([(string)$nextVersion]);
+            }
+        } else {
+            break;
         }
     }
 } catch (PDOException $e) {

@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS meta_info (
     value VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO meta_info (`key`, value) VALUES ('schema_version', '2')
+INSERT INTO meta_info (`key`, value) VALUES ('schema_version', '3')
     ON DUPLICATE KEY UPDATE value = VALUES(value);
 
 CREATE TABLE IF NOT EXISTS users (
@@ -29,4 +29,14 @@ CREATE TABLE IF NOT EXISTS shopping_list_items (
     CONSTRAINT fk_shopping_list_items_list
         FOREIGN KEY (list_id) REFERENCES shopping_lists(id) ON DELETE CASCADE,
     INDEX idx_shopping_list_items_list (list_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS shopping_item_usage (
+    list_id     INT          NOT NULL,
+    name        VARCHAR(255) NOT NULL,
+    usage_count INT          NOT NULL DEFAULT 1,
+    last_added_at DATETIME   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (list_id, name),
+    CONSTRAINT fk_shopping_item_usage_list
+        FOREIGN KEY (list_id) REFERENCES shopping_lists(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -31,11 +31,35 @@ function getShoppingList(int $id): ?array {
 /**
  * Lädt alle Einträge eines Einkaufzettels.
  *
- * @return array<int, array{id:int, name:string}>
+ * @return array<int, array{id:int, name:string, amount:int}>
  */
 function getShoppingListItems(int $listId): array {
     global $pdo;
     $stmt = $pdo->prepare('SELECT id, name, amount FROM shopping_list_items WHERE list_id = ? ORDER BY created_at ASC, id ASC');
     $stmt->execute([$listId]);
     return $stmt->fetchAll();
+}
+
+/**
+ * Fügt einen Eintrag zu einem Einkaufzettel hinzu und aktualisiert die Statistik.
+ */
+function addShoppingListItem(int $listId, string $name): int {
+    global $pdo;
+    
+    // Item hinzufügen
+    $stmt = $pdo->prepare('INSERT INTO shopping_list_items (list_id, name) VALUES (?, ?)');
+    $stmt->execute([$listId, $name]);
+    $itemId = (int)$pdo->lastInsertId();
+    
+    // Statistik aktualisieren
+    $stmt = $pdo->prepare('
+        INSERT INTO shopping_item_usage (list_id, name, usage_count, last_added_at)
+        VALUES (?, ?, 1, CURRENT_TIMESTAMP)
+        ON DUPLICATE KEY UPDATE 
+            usage_count = usage_count + 1,
+            last_added_at = CURRENT_TIMESTAMP
+    ');
+    $stmt->execute([$listId, $name]);
+    
+    return $itemId;
 }

@@ -39,8 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $listId = (int)($_POST['list_id'] ?? 0);
         $name   = trim($_POST['name'] ?? '');
         if ($listId > 0 && $name !== '' && getShoppingList($listId) !== null) {
-            $stmt = $pdo->prepare('INSERT INTO shopping_list_items (list_id, name) VALUES (?, ?)');
-            $stmt->execute([$listId, $name]);
+            addShoppingListItem($listId, $name);
         }
         header('Location: start.php?id=' . $listId);
         exit;
