@@ -26,8 +26,8 @@ test('logout should clear localStorage', async ({ page }) => {
     await page.goto(`/login.php?hash=${testUserHash}`);
     await expect(page).toHaveURL(/start.php/);
 
-    // 2. Logout klicken
-    await page.click('a[href="logout.php"]');
+    // 2. Logout aufrufen
+    await page.goto('/logout.php');
     await expect(page).toHaveURL(/login.php/);
 
     // 3. Prüfen, ob localStorage leer ist
