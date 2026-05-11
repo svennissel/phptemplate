@@ -9,7 +9,6 @@
 ## 2. Security
 *   **SQL Injection**: Use PDO with prepared statements for all database queries without exception. Avoid `SELECT *` and explicitly specify the required columns instead.
 *   **XSS Protection**: Use Twig's automatic escaping. Variables that might contain HTML must be handled correctly.
-*   **CSRF Protection**: Every POST request must be validated by a CSRF token (`validateCsrfToken($_POST['csrf_token'] ?? '')`). The token must be provided in the template via the corresponding form field.
 *   **Authentication**: Sensitive pages must call `requireLogin()`.
 
 ## 3. UI/UX & Design (Mobile-First)

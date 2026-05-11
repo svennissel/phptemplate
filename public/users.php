@@ -24,47 +24,43 @@ if (empty($currentUser['is_admin'])) {
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($currentUser['is_admin'])) {
     global $pdo;
-    if (!validateCsrfToken($_POST['csrf_token'] ?? '')) {
-        $error = 'Ungültiger CSRF-Token.';
-    } else {
-        $editId      = ($_POST['id'] !== '') ? (int)$_POST['id'] : null;
-        $editName    = trim($_POST['name'] ?? '');
-        $editIsAdmin = isset($_POST['is_admin']) ? 1 : 0;
-        $action      = $_POST['action'] ?? 'save';
+    $editId      = ($_POST['id'] !== '') ? (int)$_POST['id'] : null;
+    $editName    = trim($_POST['name'] ?? '');
+    $editIsAdmin = isset($_POST['is_admin']) ? 1 : 0;
+    $action      = $_POST['action'] ?? 'save';
 
-        if ($action === 'delete' && $editId) {
-            if ($editId === (int)$currentUser['id']) {
-                $error = 'Man kann sich nicht selbst löschen.';
-            } else {
-                try {
-                    $stmt = $pdo->prepare('DELETE FROM users WHERE id = ?');
-                    $stmt->execute([$editId]);
-                    header('Location: users.php');
-                    exit;
-                } catch (PDOException $e) {
-                    $error = 'Fehler beim Löschen: ' . $e->getMessage();
-                }
-            }
-        } elseif ($editName !== '') {
+    if ($action === 'delete' && $editId) {
+        if ($editId === (int)$currentUser['id']) {
+            $error = 'Man kann sich nicht selbst löschen.';
+        } else {
             try {
-                if ($editId) {
-                    // Update bestehender Benutzer
-                    $stmt = $pdo->prepare('UPDATE users SET name = ?, is_admin = ? WHERE id = ?');
-                    $stmt->execute([$editName, $editIsAdmin, $editId]);
-                } else {
-                    // Neuer Benutzer
-                    $hash = createHash();
-                    $stmt = $pdo->prepare('INSERT INTO users (name, hash, is_admin) VALUES (?, ?, ?)');
-                    $stmt->execute([$editName, $hash, $editIsAdmin]);
-                }
+                $stmt = $pdo->prepare('DELETE FROM users WHERE id = ?');
+                $stmt->execute([$editId]);
                 header('Location: users.php');
                 exit;
             } catch (PDOException $e) {
-                $error = 'Fehler beim Speichern: ' . $e->getMessage();
+                $error = 'Fehler beim Löschen: ' . $e->getMessage();
             }
-        } else {
-            $error = 'Name darf nicht leer sein.';
         }
+    } elseif ($editName !== '') {
+        try {
+            if ($editId) {
+                // Update bestehender Benutzer
+                $stmt = $pdo->prepare('UPDATE users SET name = ?, is_admin = ? WHERE id = ?');
+                $stmt->execute([$editName, $editIsAdmin, $editId]);
+            } else {
+                // Neuer Benutzer
+                $hash = createHash();
+                $stmt = $pdo->prepare('INSERT INTO users (name, hash, is_admin) VALUES (?, ?, ?)');
+                $stmt->execute([$editName, $hash, $editIsAdmin]);
+            }
+            header('Location: users.php');
+            exit;
+        } catch (PDOException $e) {
+            $error = 'Fehler beim Speichern: ' . $e->getMessage();
+        }
+    } else {
+        $error = 'Name darf nicht leer sein.';
     }
 }
 
@@ -78,7 +74,6 @@ echo $twig->render('users.html.twig', [
     'currentUser' => $currentUser,
     'users'       => $users,
     'activePage'  => 'users',
-    'csrfToken'   => generateCsrfToken(),
     'error'       => $error,
     'loginBaseUrl' => $loginBaseUrl,
     'lists'        => getShoppingLists(),

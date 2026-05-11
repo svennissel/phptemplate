@@ -18,7 +18,6 @@
         <p class="muted">Noch kein Einkaufzettel vorhanden. Erstelle einen über das <i class="fa-solid fa-plus"></i> oben.</p>
     {% else %}
         <form method="post" class="form add-item-form">
-            <input type="hidden" name="csrf_token" value="{{ csrfToken }}">
             <input type="hidden" name="action" value="add_item">
             <input type="hidden" name="list_id" value="{{ currentList.id }}">
             <div class="search-row">
@@ -58,13 +57,11 @@
                             </button>
                         </div>
                         <form method="post" class="shopping-item-delete-form" style="display:none;">
-                            <input type="hidden" name="csrf_token" value="{{ csrfToken }}">
                             <input type="hidden" name="action" value="delete_item">
                             <input type="hidden" name="list_id" value="{{ currentList.id }}">
                             <input type="hidden" name="item_id" value="{{ item.id }}">
                         </form>
                         <form method="post" id="update-amount-form-{{ item.id }}" style="display:none;">
-                            <input type="hidden" name="csrf_token" value="{{ csrfToken }}">
                             <input type="hidden" name="action" value="update_item_amount">
                             <input type="hidden" name="list_id" value="{{ currentList.id }}">
                             <input type="hidden" name="item_id" value="{{ item.id }}">
@@ -80,7 +77,6 @@
         <div class="modal-content">
             <h2 class="page-title">Neuen Einkaufzettel erstellen</h2>
             <form method="post" class="form">
-                <input type="hidden" name="csrf_token" value="{{ csrfToken }}">
                 <input type="hidden" name="action" value="create_list">
 
                 <label for="list-name">Name</label>

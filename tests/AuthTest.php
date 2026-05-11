@@ -78,18 +78,6 @@ class AuthTest extends TestCase
         $this->assertEquals('test_hash', getLoginHash());
     }
 
-    public function testValidateCsrfTokenReturnsFalseOnEmpty()
-    {
-        $this->assertFalse(validateCsrfToken(null));
-        $this->assertFalse(validateCsrfToken(''));
-    }
-
-    public function testValidateCsrfTokenValidatesCorrectly()
-    {
-        $_SESSION['csrf_token'] = 'token123';
-        $this->assertTrue(validateCsrfToken('token123'));
-        $this->assertFalse(validateCsrfToken('wrong_token'));
-    }
 
     public function testGetCurrentUserReturnsNullWhenNotLoggedIn()
     {

@@ -115,20 +115,3 @@ function requireLogin(): array {
     exit;
 }
 
-function generateCsrfToken(): string {
-    $payload = bin2hex(random_bytes(16)) . '|' . time();
-    $cipher  = 'aes-256-cbc';
-    $iv      = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher));
-    $enc     = openssl_encrypt($payload, $cipher, CSRF_ENCRYPTION_KEY, 0, $iv);
-    $token   = base64_encode($iv . '::' . $enc);
-    $_SESSION['csrf_token'] = $token;
-    return $token;
-}
-
-function validateCsrfToken(?string $token): bool {
-    if ($token === null || $token === '') return false;
-    if (isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token)) {
-        return true;
-    }
-    return false;
-}

@@ -27,10 +27,6 @@ const DATABASE_USER = '{DATABASE_USER}';
  */
 const DATABASE_PASSWORD = '{DATABASE_PASSWORD}';
 
-/**
- * Verschlüsselungsschlüssel für CSRF-Tokens (AES-256-CBC).
- */
-const CSRF_ENCRYPTION_KEY = '{CSRF_ENCRYPTION_KEY}';
 
 /**
  * Lebensdauer von Cookies und Sessions in Sekunden.

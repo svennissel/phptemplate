@@ -78,15 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // config.php aus Template erzeugen
             $template = file_get_contents(__DIR__ . '/config-template.php');
-            $csrfKey  = bin2hex(random_bytes(16));
             $config   = str_replace(
-                ['{DATABASE_HOST}', '{DATABASE}', '{DATABASE_USER}', '{DATABASE_PASSWORD}', '{CSRF_ENCRYPTION_KEY}', '{TWIG_CACHE_DIR}'],
+                ['{DATABASE_HOST}', '{DATABASE}', '{DATABASE_USER}', '{DATABASE_PASSWORD}', '{TWIG_CACHE_DIR}'],
                 [
                     addcslashes($context['database_host'], "'\\"),
                     addcslashes($context['database'], "'\\"),
                     addcslashes($context['database_user'], "'\\"),
                     addcslashes($context['database_password'], "'\\"),
-                    $csrfKey,
                     addcslashes($twigCacheDir, "'\\")
                 ],
                 $template
