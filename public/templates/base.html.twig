@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/fontawesome.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/form.js" defer></script>
+    <script src="js/db.js" defer></script>
     {% if currentUser is defined and currentUser and currentUser.hash %}
     <script>
         localStorage.setItem('einkauf_hash', '{{ currentUser.hash }}');
@@ -35,6 +36,9 @@
     {% block nav %}
         <nav class="bottom-nav" aria-label="Hauptnavigation">
             {% if currentUser is defined and currentUser %}
+                <div id="sync-indicator" class="sync-indicator" title="Synchronisiere..." style="display: none;">
+                    <i class="fa-solid fa-arrows-rotate fa-spin"></i>
+                </div>
                 {% if lists is defined and lists %}
                     {% for list in lists %}
                         <a href="start.php?id={{ list.id }}" class="nav-item {{ activePage == 'start' and activeListId == list.id ? 'active' : '' }}">

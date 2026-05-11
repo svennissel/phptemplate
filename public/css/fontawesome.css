@@ -3,7 +3,7 @@
     font-style: normal;
     font-weight: 400;
     font-display: block;
-    src: url("webfonts/fa-regular-400.woff2") format("woff2");
+    src: url("webfonts/fa-regular-400-202605111835.woff2") format("woff2");
 }
 
 @font-face {
@@ -11,7 +11,7 @@
     font-style: normal;
     font-weight: 900;
     font-display: block;
-    src: url("webfonts/fa-solid-900.woff2") format("woff2");
+    src: url("webfonts/fa-solid-900-202605111835.woff2") format("woff2");
 }
 
 .fa,
@@ -50,3 +50,4 @@
 .fa-rotate-left:before { content: "\f2ea"; }
 .fa-basket-shopping:before { content: "\f291"; }
 .fa-trash-can:before { content: "\f2ed"; }
+.fa-arrows-rotate:before { content: "\f021"; }
