@@ -76,7 +76,15 @@ body {
 .topbar-btn:active { background: rgba(255, 255, 255, 0.2); }
 
 /* Einkaufzettel: Suchzeile zum Hinzufügen */
-.add-item-form { margin-bottom: 1rem; }
+.add-item-form {
+    position: sticky;
+    top: 52px; /* Höhe der Topbar */
+    z-index: 9;
+    background: var(--bg-color);
+    padding: 0.7rem 0 0.5rem 0;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
 .search-row {
     display: flex;
     gap: 0.5rem;
@@ -161,7 +169,7 @@ body {
 /* Content */
 .content {
     flex: 1;
-    padding: 1rem 1rem 5rem;
+    padding: 0 1rem 5rem;
 }
 
 .page-title { font-size: 1.2rem; margin: 0 0 1rem 0; }
