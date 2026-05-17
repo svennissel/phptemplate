@@ -7,7 +7,7 @@
     <div class="user-icon-list">
         {% for user in listUsers %}
             {% if user.profile_image %}
-                <img src="uploads/logos/{{ user.profile_image }}_30.webp" alt="{{ user.name }}" title="{{ user.name }}">
+                <img src="uploads/logos/{{ user.profile_image|replace({'.webp': ''}) }}_30.webp" alt="{{ user.name }}" title="{{ user.name }}" onclick="openImageModal('uploads/logos/{{ user.profile_image }}', '{{ user.name }}')">
             {% else %}
                 <div class="fa-user-circle-wrapper" title="{{ user.name }}"><i class="fa-solid fa-user"></i></div>
             {% endif %}

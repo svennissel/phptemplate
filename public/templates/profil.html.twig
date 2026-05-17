@@ -16,7 +16,7 @@
             <form action="profil.php" method="post" enctype="multipart/form-data" id="profile-image-form">
                 <label for="profile_image_input" class="avatar clickable">
                     {% if user.profile_image %}
-                        <img src="uploads/logos/{{ user.profile_image }}" alt="{{ user.name }}">
+                        <img src="uploads/logos/{{ user.profile_image|replace({'.webp': ''}) }}.webp" alt="{{ user.name }}">
                     {% else %}
                         <i class="fa-solid fa-user"></i>
                     {% endif %}

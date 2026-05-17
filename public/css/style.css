@@ -267,12 +267,14 @@ body {
     display: flex;
     gap: 0.3rem;
     align-items: center;
+    margin-right: 0.5rem;
 }
 .user-icon-list img {
     width: 30px;
     height: 30px;
     border-radius: 50%;
     border: 1px solid var(--border-color);
+    cursor: pointer;
 }
 .user-icon-list .fa-user-circle-wrapper {
     width: 30px;
@@ -477,4 +479,23 @@ input:focus { outline: 2px solid var(--primary-color); border-color: transparent
 .cr-slider-wrap {
     margin: 1.5rem 0 0 0;
     width: 100%;
+}
+
+/* Image Modal */
+.modal-content-image {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    object-fit: contain;
+}
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 101;
 }

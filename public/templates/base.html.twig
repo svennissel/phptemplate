@@ -59,19 +59,50 @@
                         <span class="nav-label">Benutzer</span>
                     </a>
                 {% endif %}
-                <a href="profil.php" class="nav-item {{ activePage == 'profil' ? 'active' : '' }}">
-                    <span class="nav-icon">
-                        {% if currentUser.profile_image %}
-                            <img src="uploads/logos/{{ currentUser.profile_image }}_30.webp" alt="Profil">
-                        {% else %}
-                            <i class="fa-solid fa-user"></i>
-                        {% endif %}
-                    </span>
-                    <span class="nav-label">Profil</span>
-                </a>
+                    <a href="profil.php" class="nav-item {{ activePage == 'profil' ? 'active' : '' }}">
+                        <span class="nav-icon">
+                            {% if currentUser.profile_image %}
+                                <img src="uploads/logos/{{ currentUser.profile_image|replace({'.webp': ''}) }}_30.webp" alt="Profil">
+                            {% else %}
+                                <i class="fa-solid fa-user"></i>
+                            {% endif %}
+                        </span>
+                        <span class="nav-label">Profil</span>
+                    </a>
             {% endif %}
         </nav>
     {% endblock %}
 </div>
+    <div id="imageModal" class="modal" onclick="closeImageModal()">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content-image" id="fullImage" src="" alt="Vollbild">
+    </div>
+
+    <script>
+        function openImageModal(src, alt) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('fullImage');
+            modal.style.display = 'flex';
+            modalImg.src = src;
+            modalImg.alt = alt || '';
+            history.pushState({imageModalOpen: true}, '');
+        }
+
+        function closeImageModal(fromHistory = false) {
+            const modal = document.getElementById('imageModal');
+            if (modal) {
+                modal.style.display = 'none';
+                if (!fromHistory && history.state && history.state.imageModalOpen) {
+                    history.back();
+                }
+            }
+        }
+
+        window.addEventListener('popstate', function (event) {
+            if (document.getElementById('imageModal') && document.getElementById('imageModal').style.display === 'flex') {
+                closeImageModal(true);
+            }
+        });
+    </script>
 </body>
 </html>

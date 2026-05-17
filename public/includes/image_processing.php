@@ -17,7 +17,7 @@ function processProfileImage(array $file, ?array $crop = null, string $targetDir
         return null;
     }
 
-    $logo = uniqid();
+    $logo = uniqid() . '.webp';
     $fullTargetDir = __DIR__ . '/../' . $targetDir;
     $logoPath = $fullTargetDir . $logo;
 
@@ -87,7 +87,7 @@ function processProfileImage(array $file, ?array $crop = null, string $targetDir
             imagealphablending($thumb, false);
             imagesavealpha($thumb, true);
             imagecopyresampled($thumb, $srcImage, 0, 0, $cropX, $cropY, $thumbSize, $thumbSize, $cropWidth, $cropHeight);
-            imagewebp($thumb, $fullTargetDir . $logo . '_30.webp', 50);
+            imagewebp($thumb, $fullTargetDir . str_replace('.webp', '', $logo) . '_30.webp', 50);
             imagedestroy($thumb);
 
             imagedestroy($srcImage);
