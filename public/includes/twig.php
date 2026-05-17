@@ -27,9 +27,21 @@ $twig = (function (): Environment {
         }
     }
 
-    return new Environment($loader, [
+    $twig = new Environment($loader, [
         'cache'      => $cache,
         'autoescape' => 'html',
         'debug'      => false,
     ]);
+
+    // Cache-Busting: Eine Funktion zum Generieren von Asset-URLs mit Zeitstempel hinzufügen
+    $twig->addFunction(new \Twig\TwigFunction('asset', function ($path) {
+        $fullPath = __DIR__ . '/../' . ltrim($path, '/');
+        if (file_exists($fullPath)) {
+            $version = filemtime($fullPath);
+            return $path . '?v=' . $version;
+        }
+        return $path;
+    }));
+
+    return $twig;
 })();
