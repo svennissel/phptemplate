@@ -10,6 +10,7 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="css/fontawesome.css">
     <link rel="stylesheet" href="css/style.css">
+    {% block head %}{% endblock %}
     <script src="js/form.js" defer></script>
     <script src="js/db.js" defer></script>
     {% if currentUser is defined and currentUser and currentUser.hash %}
@@ -59,7 +60,13 @@
                     </a>
                 {% endif %}
                 <a href="profil.php" class="nav-item {{ activePage == 'profil' ? 'active' : '' }}">
-                    <span class="nav-icon"><i class="fa-solid fa-user"></i></span>
+                    <span class="nav-icon">
+                        {% if currentUser.profile_image %}
+                            <img src="uploads/logos/{{ currentUser.profile_image }}_30.webp" alt="Profil">
+                        {% else %}
+                            <i class="fa-solid fa-user"></i>
+                        {% endif %}
+                    </span>
                     <span class="nav-label">Profil</span>
                 </a>
             {% endif %}

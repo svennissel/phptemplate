@@ -45,7 +45,7 @@ try {
                 $name = trim($payload['name'] ?? '');
                 $tempId = $payload['temp_id'] ?? null;
                 if ($listId > 0 && $name !== '') {
-                    $serverId = addShoppingListItem($listId, $name);
+                    $serverId = addShoppingListItem($listId, $name, (int)$currentUser['id']);
                     if ($tempId) {
                         $results[] = [
                             'action' => 'add_item',

@@ -3,12 +3,28 @@
 {% block title %}Profil{% endblock %}
 {% block pageTitle %}Profil{% endblock %}
 
+{% block head %}
+    <link rel="stylesheet" href="css/croppie.css">
+    <script src="js/croppie.min.js"></script>
+{% endblock %}
+
 {% block content %}
     {% if user is null %}
         <p class="error">Benutzer nicht gefunden.</p>
     {% else %}
         <section class="profile">
-            <div class="avatar"><i class="fa-solid fa-user"></i></div>
+            <form action="profil.php" method="post" enctype="multipart/form-data" id="profile-image-form">
+                <label for="profile_image_input" class="avatar clickable">
+                    {% if user.profile_image %}
+                        <img src="uploads/logos/{{ user.profile_image }}" alt="{{ user.name }}">
+                    {% else %}
+                        <i class="fa-solid fa-user"></i>
+                    {% endif %}
+                    <div class="avatar-overlay"><i class="fa-solid fa-camera"></i></div>
+                </label>
+                <input type="file" name="profile_image" id="profile_image_input" style="display: none;" accept="image/*">
+                <input type="hidden" name="crop_data" id="crop_data_input">
+            </form>
             <h1 class="profile-name">{{ user.name }}</h1>
             {% if user.is_admin %}<span class="badge">Admin</span>{% endif %}
 
@@ -33,5 +49,74 @@
                 </ul>
             {% endif %}
         </section>
+
+        <div id="cropModal" class="modal">
+            <div class="modal-content">
+                <h2 class="page-title">Bild zuschneiden</h2>
+                <div id="crop-container" style="height: 300px;"></div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button type="button" class="btn btn-primary" id="save-crop" style="flex: 1; margin-top: 0;">Speichern</button>
+                    <button type="button" class="btn btn-primary" style="flex: 1; margin-top: 0; background: var(--text-muted);" onclick="closeCropModal()">Abbrechen</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let croppieInstance = null;
+            const profileImageInput = document.getElementById('profile_image_input');
+            const cropModal = document.getElementById('cropModal');
+            const cropContainer = document.getElementById('crop-container');
+            const cropDataInput = document.getElementById('crop_data_input');
+            const profileImageForm = document.getElementById('profile-image-form');
+
+            profileImageInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        openCropModal(e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            function openCropModal(imageSrc) {
+                cropModal.style.display = 'flex';
+                history.pushState({cropModalOpen: true}, '');
+
+                if (croppieInstance) {
+                    croppieInstance.destroy();
+                }
+
+                croppieInstance = new Croppie(cropContainer, {
+                    viewport: { width: 200, height: 200, type: 'circle' },
+                    boundary: { width: 250, height: 250 },
+                    showZoomer: true,
+                    enableOrientation: true
+                });
+
+                croppieInstance.bind({
+                    url: imageSrc
+                });
+            }
+
+            document.getElementById('save-crop').addEventListener('click', function() {
+                const data = croppieInstance.get();
+                cropDataInput.value = data.points.join(',');
+                profileImageForm.submit();
+            });
+
+            function closeCropModal(fromHistory = false) {
+                cropModal.style.display = 'none';
+                if (!fromHistory && history.state && history.state.cropModalOpen) {
+                    history.back();
+                }
+            }
+
+            window.addEventListener('popstate', function () {
+                if (cropModal.style.display === 'flex') {
+                    closeCropModal(true);
+                }
+            });
+        </script>
     {% endif %}
 {% endblock %}

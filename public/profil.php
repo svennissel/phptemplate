@@ -12,12 +12,32 @@ require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/twig.php';
 require_once __DIR__ . '/includes/url.php';
 require_once __DIR__ . '/includes/shopping.php';
+require_once __DIR__ . '/includes/image_processing.php';
 
 $currentUser = requireLogin();
 $id      = (int)$currentUser['id'];
 
 global $pdo;
-$stmt = $pdo->prepare('SELECT id, name, hash, is_admin, created_at FROM users WHERE id = ?');
+
+// Profilbild-Upload verarbeiten
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_image'])) {
+    $cropData = $_POST['crop_data'] ?? null;
+    $crop = null;
+    if ($cropData) {
+        $crop = explode(',', $cropData);
+    }
+    $logo = processProfileImage($_FILES['profile_image'], $crop);
+    if ($logo) {
+        $stmt = $pdo->prepare('UPDATE users SET profile_image = ? WHERE id = ?');
+        $stmt->execute([$logo, $id]);
+        
+        // Session aktualisieren, falls nötig (getCurrentUser nutzt die DB, aber wir könnten hier einen Redirect machen)
+        header('Location: profil.php');
+        exit;
+    }
+}
+
+$stmt = $pdo->prepare('SELECT id, name, hash, is_admin, profile_image, created_at FROM users WHERE id = ?');
 $stmt->execute([$id]);
 $user = $stmt->fetch();
 

@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $listId = (int)($_POST['list_id'] ?? 0);
         $name   = trim($_POST['name'] ?? '');
         if ($listId > 0 && $name !== '' && getShoppingList($listId) !== null) {
-            addShoppingListItem($listId, $name);
+            addShoppingListItem($listId, $name, (int)$currentUser['id']);
         }
         header('Location: start.php?id=' . $listId);
         exit;
@@ -78,6 +78,7 @@ if ($currentList === null && !empty($lists)) {
 }
 
 $items = $currentList ? getShoppingListItems((int)$currentList['id']) : [];
+$listUsers = $currentList ? getShoppingListUsers((int)$currentList['id']) : [];
 
 echo $twig->render('start.html.twig', [
     'currentUser'    => $currentUser,
@@ -86,5 +87,6 @@ echo $twig->render('start.html.twig', [
     'lists'          => $lists,
     'currentList'    => $currentList,
     'items'          => $items,
+    'listUsers'      => $listUsers,
     'error'          => $error,
 ]);

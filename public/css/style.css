@@ -230,6 +230,65 @@ body {
     font-size: 2rem;
     margin: 0 auto 0.8rem auto;
     font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.avatar-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.avatar:hover .avatar-overlay {
+    opacity: 1;
+}
+.nav-icon img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.user-icon-list {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+}
+.user-icon-list img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+}
+.user-icon-list .fa-user-circle-wrapper {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color);
+    color: var(--font-color-on-primary);
+    border-radius: 50%;
+    font-size: 0.8rem;
+}
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 .profile-name { margin: 0.2rem 0; font-size: 1.3rem; }
 .profile-details {
@@ -401,4 +460,21 @@ input:focus { outline: 2px solid var(--primary-color); border-color: transparent
     width: 100%;
     max-width: 400px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Croppie Customizations */
+#crop-container {
+    margin: 1rem 0;
+    width: 100%;
+}
+.cr-boundary {
+    border-radius: 8px;
+}
+.cr-viewport {
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+}
+.cr-slider-wrap {
+    margin: 1.5rem 0 0 0;
+    width: 100%;
 }

@@ -59,7 +59,7 @@ function getLoginHash(): ?string {
 function getCurrentUser(): ?array {
     global $pdo;
     if (!isLoggedIn()) return null;
-    $stmt = $pdo->prepare('SELECT id, name, hash, is_admin, created_at FROM users WHERE hash = ?');
+    $stmt = $pdo->prepare('SELECT id, name, hash, is_admin, profile_image, created_at FROM users WHERE hash = ?');
     $stmt->execute([getLoginHash()]);
     $user = $stmt->fetch();
     return $user ?: null;

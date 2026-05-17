@@ -43,12 +43,12 @@ function getShoppingListItems(int $listId): array {
 /**
  * Fügt einen Eintrag zu einem Einkaufzettel hinzu und aktualisiert die Statistik.
  */
-function addShoppingListItem(int $listId, string $name): int {
+function addShoppingListItem(int $listId, string $name, ?int $userId = null): int {
     global $pdo;
     
     // Item hinzufügen
-    $stmt = $pdo->prepare('INSERT INTO shopping_list_items (list_id, name) VALUES (?, ?)');
-    $stmt->execute([$listId, $name]);
+    $stmt = $pdo->prepare('INSERT INTO shopping_list_items (list_id, name, user_id) VALUES (?, ?, ?)');
+    $stmt->execute([$listId, $name, $userId]);
     $itemId = (int)$pdo->lastInsertId();
     
     // Statistik aktualisieren
@@ -62,4 +62,21 @@ function addShoppingListItem(int $listId, string $name): int {
     $stmt->execute([$listId, $name]);
     
     return $itemId;
+}
+
+/**
+ * Lädt alle Benutzer, die Einträge auf einem bestimmten Einkaufzettel haben.
+ *
+ * @return array<int, array{id:int, name:string, profile_image:string|null}>
+ */
+function getShoppingListUsers(int $listId): array {
+    global $pdo;
+    $stmt = $pdo->prepare('
+        SELECT DISTINCT u.id, u.name, u.profile_image 
+        FROM users u
+        JOIN shopping_list_items sli ON u.id = sli.user_id
+        WHERE sli.list_id = ?
+    ');
+    $stmt->execute([$listId]);
+    return $stmt->fetchAll();
 }
