@@ -151,23 +151,6 @@
                 const q = this.value.trim();
                 const listId = {{ currentList.id|default(0) }};
 
-                // Prüfen ob der Wert aus der Datalist ausgewählt wurde
-                const options = suggestionsDatalist.options;
-                let found = false;
-                for (let i = 0; i < options.length; i++) {
-                    if (options[i].value === q) {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (found) {
-                    // Vorschläge leeren und sofort absenden
-                    suggestionsDatalist.innerHTML = '';
-                    addItemForm.requestSubmit();
-                    return;
-                }
-
                 clearTimeout(timeout);
                 
                 if (q.length < 1 || listId === 0) {

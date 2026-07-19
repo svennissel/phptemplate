@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Shopping List Suggestions Selection', () => {
     const testUserHash = 'test-user-hash-123456';
 
-    test('should add item immediately when selecting from suggestions', async ({ page }) => {
+    test('should NOT add item immediately when selecting from suggestions', async ({ page }) => {
         // Login
         await page.goto(`/login.php?hash=${testUserHash}`);
         await page.goto('/start.php');
@@ -44,11 +44,15 @@ test.describe('Shopping List Suggestions Selection', () => {
             el.dispatchEvent(new Event('input', { bubbles: true }));
         });
 
-        // Check if the item was added immediately (it should appear in the list)
+        // Check that the item was NOT added immediately (it should NOT appear in the list yet)
+        await expect(page.locator('.shopping-item')).toHaveCount(0);
+        await expect(input).toHaveValue('Milch');
+
+        // Now press Enter to add it manually
+        await page.keyboard.press('Enter');
+
+        // Check if the item was added after manual confirmation
         await expect(page.locator('.shopping-item .card-title')).toHaveText('Milch');
-        
-        // Wait a bit to see if duplicates appear
-        await page.waitForTimeout(2000);
         await expect(page.locator('.shopping-item')).toHaveCount(1);
         
         // Verify input is reset
